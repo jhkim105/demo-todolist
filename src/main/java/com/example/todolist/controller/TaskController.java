@@ -2,12 +2,14 @@ package com.example.todolist.controller;
 
 import com.example.todolist.model.*;
 import com.example.todolist.service.*;
+import io.swagger.annotations.*;
 import lombok.*;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@Api(tags = "tasks")
 @RestController
 @RequestMapping("/tasks")
 @RequiredArgsConstructor
@@ -16,6 +18,7 @@ public class TaskController {
   private final TaskService service;
 
   @GetMapping
+  @ApiOperation("getList")
   public List<Task> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
     Page<Task> resultPage = service.findPaginated(page, size);
     if (page > resultPage.getTotalPages()) {

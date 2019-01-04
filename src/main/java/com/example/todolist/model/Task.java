@@ -1,6 +1,7 @@
 package com.example.todolist.model;
 
 import com.fasterxml.jackson.annotation.*;
+import io.swagger.annotations.*;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.springframework.util.*;
@@ -48,6 +49,7 @@ public class Task implements Serializable {
 
   @ManyToMany(mappedBy = "superTasks")
   @JsonIgnore
+  @ApiModelProperty(hidden = true)
   private Set<Task> subTasks = new HashSet<>();
 
   public void processFinish() {

@@ -1,13 +1,15 @@
 package com.example.todolist.controller;
 
-import com.example.todolist.model.*;
-import com.example.todolist.service.*;
-import io.swagger.annotations.*;
-import lombok.*;
-import org.springframework.data.domain.*;
+import com.example.todolist.model.Task;
+import com.example.todolist.service.TaskService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @Api(tags = "tasks")
 @RestController
@@ -19,28 +21,38 @@ public class TaskController {
 
   @GetMapping
   @ApiOperation("getList")
-  public List<Task> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
+  public List<TaskVO> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
     Page<Task> resultPage = service.findPaginated(page, size);
     if (page > resultPage.getTotalPages()) {
       throw new RuntimeException(String.format("requested page[%s] is bigger than totalPages[%s]",
           page, resultPage.getTotalPages()));
     }
+    if (CollectionUtils.isEmpty(resultPage.getContent())) {
+      return null;
+    }
 
-    return resultPage.getContent();
+    return TaskVO.of(resultPage.getContent());
   }
 
   @PostMapping
-  public Task create(@RequestBody Task task) {
-    return service.save(task);
+  public Task create(@RequestBody TaskCreateRequestVO requestVO) {
+    return service.save(requestVO.toTask());
   }
 
   @PutMapping
-  public Task update(@RequestBody Task task) {
+  public Task update(@RequestBody TaskUpdateRequestVO requestVO) {
+    Task task = service.findOne(requestVO.getId());
+    task = requestVO.fillTask(task);
     return service.save(task);
   }
 
-  @GetMapping(path="/{id}/finish")
-  public Task finish(@PathVariable Long id) {
-    return service.finish(id);
+  @PostMapping(path="/{id}/close")
+  public Task close(@PathVariable Long id) {
+    return service.close(id);
+  }
+
+  @PostMapping(path="/{id}/open")
+  public Task open(@PathVariable Long id) {
+    return service.open(id);
   }
 }

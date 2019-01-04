@@ -1,0 +1,52 @@
+package com.example.todolist.controller;
+
+import com.example.todolist.model.Task;
+import lombok.Data;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Data
+public class TaskVO implements Serializable{
+
+  private static final long serialVersionUID = 6588242887357638373L;
+
+  private Long id;
+
+  private String description;
+
+  private boolean closed;
+
+  private Date createdAt;
+
+  private Date updatedAt;
+
+  private List<String> superTaskIds;
+
+  public static TaskVO of(Task task) {
+    TaskVO vo = new TaskVO();
+    BeanUtils.copyProperties(task, vo);
+
+    if (!CollectionUtils.isEmpty(task.getSuperTasks())) {
+      vo.setSuperTaskIds(task.getSuperTasks()
+          .stream()
+          .map(superTask -> Task.SUPER_TASK_PREFIX + task.getId())
+          .collect(Collectors.toList()));
+    }
+
+    return vo;
+  }
+
+  public static List<TaskVO> of(List<Task> tasks) {
+    if (CollectionUtils.isEmpty(tasks)) {
+      return null;
+    }
+
+    return tasks.stream().map(task -> TaskVO.of(task)).collect(Collectors.toList());
+  }
+
+}

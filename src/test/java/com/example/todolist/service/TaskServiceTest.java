@@ -1,19 +1,20 @@
 package com.example.todolist.service;
 
-import com.example.todolist.model.*;
-import com.example.todolist.repository.*;
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.test.context.*;
-import org.springframework.boot.test.mock.mockito.*;
-import org.springframework.context.annotation.*;
-import org.springframework.test.context.junit4.*;
+import com.example.todolist.model.Task;
+import com.example.todolist.repository.TaskRepository;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.*;
+import java.util.Optional;
 
-import static org.assertj.core.api.Java6Assertions.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 public class TaskServiceTest {
@@ -39,10 +40,10 @@ public class TaskServiceTest {
     Task task = new Task();
     task.setDescription("Super Task");
     task.setId(111l);
-    task.setFinished(false);
+    task.setClosed(false);
     Task subTask1 = new Task();
     subTask1.setDescription("Sub Task1");
-    subTask1.setFinished(true);
+    subTask1.setClosed(true);
    task.getSubTasks().add(subTask1);
 
     Mockito.when(taskRepository.findById(task.getId()))
@@ -54,9 +55,9 @@ public class TaskServiceTest {
 
   @Test
   public void finish() throws Exception {
-    Task task = taskService.finish(111L);
+    Task task = taskService.close(111L);
 
-    assertThat(task.isFinished())
+    assertThat(task.isClosed())
         .isTrue();
   }
 

@@ -1,11 +1,11 @@
 package com.example.todolist;
 
-import com.example.todolist.model.*;
-import com.fasterxml.jackson.databind.*;
-import lombok.extern.slf4j.*;
-import org.junit.*;
+import com.example.todolist.model.Task;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
 
 @Slf4j
 public final class JsonTest {
@@ -13,7 +13,7 @@ public final class JsonTest {
   @Test
   public void convertToString() {
     Task task = TestData.newTask("API 구현");
-    task.setSuperTaskIds(Arrays.asList(-1L, -2L));
+    task.setSuperTaskIds(Arrays.asList("@1", "@2"));
     log.debug(toString(task));
   }
 

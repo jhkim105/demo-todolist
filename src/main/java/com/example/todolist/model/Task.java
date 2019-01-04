@@ -1,25 +1,32 @@
 package com.example.todolist.model;
 
-import com.fasterxml.jackson.annotation.*;
-import io.swagger.annotations.*;
-import lombok.*;
-import org.hibernate.annotations.*;
-import org.springframework.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.*;
-import java.util.*;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tu_task")
 @Data
 @EqualsAndHashCode(callSuper = false, of = {"id"})
+@ToString(exclude = {"subTasks"})
 @NoArgsConstructor
 public class Task implements Serializable {
 
   private static final long serialVersionUID = -1249432540792537720L;
+
+  public static final String SUPER_TASK_PREFIX = "@";
 
   @Id
   @GeneratedValue
@@ -29,7 +36,7 @@ public class Task implements Serializable {
 
   @Column(nullable = false)
   @ColumnDefault("0")
-  private boolean finished;
+  private boolean closed;
 
   @Column(name = "created_at")
   private Date createdAt;
@@ -38,13 +45,14 @@ public class Task implements Serializable {
   private Date updatedAt;
 
   @Transient
-  private List<Long> superTaskIds;
+  private List<String> superTaskIds;
 
 
   @JoinTable(name = "tu_related_task",
       joinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false)},
       inverseJoinColumns = {@JoinColumn(name = "super_task_id", referencedColumnName = "id", nullable = false)})
   @ManyToMany
+  @JsonIgnore
   private Set<Task> superTasks = new HashSet<>();
 
   @ManyToMany(mappedBy = "superTasks")
@@ -52,20 +60,26 @@ public class Task implements Serializable {
   @ApiModelProperty(hidden = true)
   private Set<Task> subTasks = new HashSet<>();
 
-  public void processFinish() {
-    this.finished = true;
+  public void close() {
+    this.updatedAt = new Date();
+    this.closed = true;
+  }
+
+  public void open() {
+    this.updatedAt = new Date();
+    this.closed = false;
   }
 
   @Transient
-  public boolean isNotFinished() {
-    return !this.isFinished();
+  public boolean isOpened() {
+    return !this.isClosed();
   }
 
   @Transient
-  public boolean existsUnfinishedSubTasks() {
+  public boolean existsOpenedSubTasks() {
     if (CollectionUtils.isEmpty(subTasks))
       return false;
 
-    return subTasks.stream().filter(Task::isNotFinished).count() > 0l;
+    return subTasks.stream().filter(Task::isOpened).count() > 0l;
   }
 }

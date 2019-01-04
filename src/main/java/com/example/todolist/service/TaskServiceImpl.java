@@ -5,6 +5,7 @@ import com.example.todolist.repository.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.*;
+import org.springframework.util.*;
 
 import java.util.*;
 
@@ -22,7 +23,32 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public Task save(Task task) {
+    List<Long> superTaskIds = task.getSuperTaskIds();
+    task.getSuperTasks().clear();
+    if (!CollectionUtils.isEmpty(superTaskIds)) {
+      addSuperTasks(task, superTaskIds);
+    }
+
     return repository.save(task);
+  }
+
+  private void addSuperTasks(Task task, List<Long> superTaskIds) {
+    if (CollectionUtils.isEmpty(superTaskIds)) {
+      return;
+    }
+
+    for (Long superTaskId : superTaskIds) {
+      addSuperTask(task, superTaskId);
+    }
+
+  }
+
+  private void addSuperTask(Task task, Long superTaskId) {
+    Task superTask = repository.getOne(superTaskId);
+    if (superTask == null) {
+      throw new RuntimeException(String.format("Task[%s] not found.", superTaskId));
+    }
+    task.getSuperTasks().add(superTask);
   }
 
   @Override

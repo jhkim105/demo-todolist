@@ -1,5 +1,6 @@
 package com.example.todolist.model;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.springframework.util.*;
@@ -35,6 +36,9 @@ public class Task implements Serializable {
   @Column(name = "updated_at")
   private Date updatedAt;
 
+  @Transient
+  private List<Long> superTaskIds;
+
 
   @JoinTable(name = "tu_related_task",
       joinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false)},
@@ -43,12 +47,14 @@ public class Task implements Serializable {
   private Set<Task> superTasks = new HashSet<>();
 
   @ManyToMany(mappedBy = "superTasks")
+  @JsonIgnore
   private Set<Task> subTasks = new HashSet<>();
 
   public void processFinish() {
     this.finished = true;
   }
 
+  @Transient
   public boolean isNotFinished() {
     return !this.isFinished();
   }

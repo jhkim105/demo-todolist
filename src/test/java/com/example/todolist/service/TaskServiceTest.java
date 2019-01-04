@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.*;
 
 import java.util.*;
 
+import static org.assertj.core.api.Java6Assertions.*;
+
 @RunWith(SpringRunner.class)
 public class TaskServiceTest {
 
@@ -45,11 +47,17 @@ public class TaskServiceTest {
 
     Mockito.when(taskRepository.findById(task.getId()))
         .thenReturn(Optional.of(task));
+
+    Mockito.when(taskRepository.save(task))
+        .thenReturn(task);
   }
 
   @Test
   public void finish() throws Exception {
-    taskService.finish(111L);
+    Task task = taskService.finish(111L);
+
+    assertThat(task.isFinished())
+        .isTrue();
   }
 
 }

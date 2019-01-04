@@ -1,0 +1,1 @@
+INSERT INTO tu_task (id, created_at, description, finished, updated_at) VALUES (1, '2019-01-04 13:02:03', 'TODOLIST 개발', 0, '2019-01-05 13:02:03');

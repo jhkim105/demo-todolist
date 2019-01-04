@@ -6,10 +6,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.util.CollectionUtils;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Api(tags = "tasks")
 @RestController
@@ -21,17 +19,17 @@ public class TaskController {
 
   @GetMapping
   @ApiOperation("getList")
-  public List<TaskVO> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
-    Page<Task> resultPage = service.findPaginated(page, size);
-    if (page > resultPage.getTotalPages()) {
+  public Page<TaskVO> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
+    Page<Task> taskPage = service.findPaginated(page, size);
+    if (page > taskPage.getTotalPages()) {
       throw new RuntimeException(String.format("requested page[%s] is bigger than totalPages[%s]",
-          page, resultPage.getTotalPages()));
-    }
-    if (CollectionUtils.isEmpty(resultPage.getContent())) {
-      return null;
+          page, taskPage.getTotalPages()));
     }
 
-    return TaskVO.of(resultPage.getContent());
+    Page<TaskVO> resultPage = new PageImpl<>(TaskVO.of(taskPage.getContent()),
+        taskPage.getPageable(), taskPage.getTotalElements());
+
+    return resultPage;
   }
 
   @PostMapping

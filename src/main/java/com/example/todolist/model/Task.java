@@ -1,7 +1,5 @@
 package com.example.todolist.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,7 +18,7 @@ import java.util.Set;
 @Table(name = "tu_task")
 @Data
 @EqualsAndHashCode(callSuper = false, of = {"id"})
-@ToString(exclude = {"subTasks"})
+@ToString(exclude = {"superTasks", "subTasks"})
 @NoArgsConstructor
 public class Task implements Serializable {
 
@@ -52,12 +50,9 @@ public class Task implements Serializable {
       joinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false)},
       inverseJoinColumns = {@JoinColumn(name = "super_task_id", referencedColumnName = "id", nullable = false)})
   @ManyToMany
-  @JsonIgnore
   private Set<Task> superTasks = new HashSet<>();
 
   @ManyToMany(mappedBy = "superTasks")
-  @JsonIgnore
-  @ApiModelProperty(hidden = true)
   private Set<Task> subTasks = new HashSet<>();
 
   public void close() {

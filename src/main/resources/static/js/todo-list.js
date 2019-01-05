@@ -42,7 +42,7 @@ function addRow(task) {
   tableBodyContent += '<td class="text-center">' + task.createdAt + '</a></td>';
   tableBodyContent += '<td class="text-center">' + task.updatedAt + '</td>';
   tableBodyContent += '<td class="text-center">' + task.closed + '</td>';
-  tableBodyContent += '<td class="text-center"><button type="button" class="btn btn-default btn-sm btn-close-task"  id="closeTaskButton' + task.id + '"  taskid="' + task.id + '">Close</button></td>';
+  tableBodyContent += '<td class="text-center"><button type="button" class="btn btn-default btn-sm btn-close-task"  taskid="' + task.id + '">Close</button></td>';
   tableBodyContent += '</tr>';
   console.log(tableBodyContent);
   $('#tableBody').html(tableBodyContent);

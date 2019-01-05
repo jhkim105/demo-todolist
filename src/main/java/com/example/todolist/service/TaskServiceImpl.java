@@ -21,7 +21,13 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public Page<Task> findPaginated(int page, int size) {
     PageRequest pageRequest = PageRequest.of(page, size);
-    return repository.findAll(pageRequest);
+    Page<Task> taskPage = repository.findAll(pageRequest);
+    if (page > taskPage.getTotalPages()) {
+      throw new RuntimeException(String.format("requested page[%s] is bigger than totalPages[%s]",
+          page, taskPage.getTotalPages()));
+    }
+    return taskPage;
+
   }
 
   @Override

@@ -18,13 +18,9 @@ public class TaskController {
   private final TaskService service;
 
   @GetMapping
-  @ApiOperation("getList")
+  @ApiOperation("list")
   public Page<TaskVO> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
     Page<Task> taskPage = service.findPaginated(page, size);
-    if (page > taskPage.getTotalPages()) {
-      throw new RuntimeException(String.format("requested page[%s] is bigger than totalPages[%s]",
-          page, taskPage.getTotalPages()));
-    }
 
     Page<TaskVO> resultPage = new PageImpl<>(TaskVO.of(taskPage.getContent()),
         taskPage.getPageable(), taskPage.getTotalElements());

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -20,7 +21,9 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public Page<Task> findPaginated(int page, int size) {
-    PageRequest pageRequest = PageRequest.of(page, size);
+    Sort sort = new Sort(Sort.Direction.DESC, "id");
+    PageRequest pageRequest = PageRequest.of(page, size, sort);
+
     Page<Task> taskPage = repository.findAll(pageRequest);
     if (page > taskPage.getTotalPages()) {
       throw new RuntimeException(String.format("requested page[%s] is bigger than totalPages[%s]",

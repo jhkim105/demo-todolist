@@ -22,7 +22,7 @@ public class TaskCreateRequestVO implements Serializable {
   public Task toTask() {
     Task task = new Task();
     task.setDescription(description);
-    if (StringUtils.isBlank(superTaskIdsLabel)) {
+    if (StringUtils.isNotBlank(superTaskIdsLabel)) {
       task.setSuperTaskIds(Arrays.asList(StringUtils.split(superTaskIdsLabel, ",")));
     }
 

@@ -21,7 +21,7 @@ public class TaskUpdateRequestVO implements Serializable {
 
   public Task fillTask(Task task) {
     task.setDescription(this.description);
-    if (StringUtils.isBlank(superTaskIdsLabel)) {
+    if (StringUtils.isNotBlank(superTaskIdsLabel)) {
       task.setSuperTaskIds(Arrays.asList(StringUtils.split(superTaskIdsLabel, ",")));
     }
     task.setUpdatedAt(new Date());

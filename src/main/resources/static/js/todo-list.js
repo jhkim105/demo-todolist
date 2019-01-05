@@ -5,12 +5,32 @@ $(function() {
 
   // close
   $('#table-tasks').on('click', '.btn-close-task', function() {
-    _currentTaskId = $(this).attr('taskid');
+    var taskId = $(this).attr('taskid');
     console.log(taskId);
 
     $.ajax({
       type: 'POST',
-      url: _baseUrl + '/' + _currentTaskId + '/close',
+      url: _baseUrl + '/' + taskId + '/close',
+      dataType: 'json'
+    }).done(function () {
+      alert("SUCCESS");
+      renderTable(0);
+    }).fail(function (xhr) {
+      console.log(xhr);
+      if (xhr.responseJSON && xhr.responseJSON.message) {
+        alert(xhr.responseJSON.message);
+      }
+    });
+  });
+
+  // reopen
+  $('#table-tasks').on('click', '.btn-open-task', function() {
+    var taskId = $(this).attr('taskid');
+    console.log(taskId);
+
+    $.ajax({
+      type: 'POST',
+      url: _baseUrl + '/' + taskId + '/open',
       dataType: 'json'
     }).done(function () {
       alert("SUCCESS");
@@ -27,6 +47,14 @@ $(function() {
   // search
   $('#btn-search').click(function() {
     renderTable(0);
+  });
+
+  // create-form
+  $('#btn-create').click(function(){
+    _currentTaskId = '';
+    setTaskForm('', '');
+    event.preventDefault();
+    $('#popup-task-form').modal('show');
   });
 
   // update-form
@@ -108,13 +136,24 @@ function setTaskForm(description, superTaskIdsLabel) {
 
 function addRow(task) {
   var tableBodyContent = $('#tableBody').html();
+  var closedLabel;
+  if (task.closed) {
+    closedLabel = "Closed";
+  } else {
+    closedLabel = "Open";
+  }
+
   tableBodyContent += '<tr class="odd gradeX">';
-  tableBodyContent += '<td class="text-center">' + task.idx + '</td>';
+  tableBodyContent += '<td class="text-center">' + task.id + '</td>';
   tableBodyContent += '<td class="text-center"><a href="#" class="task-desc" taskid="' + task.id + '">' + task.description + '</a></td>';
   tableBodyContent += '<td class="text-center">' + task.createdAt + '</a></td>';
   tableBodyContent += '<td class="text-center">' + task.updatedAt + '</td>';
-  tableBodyContent += '<td class="text-center">' + task.closed + '</td>';
-  tableBodyContent += '<td class="text-center"><button type="button" class="btn btn-default btn-sm btn-close-task"  taskid="' + task.id + '">Close</button></td>';
+  tableBodyContent += '<td class="text-center">' + closedLabel + '</td>';
+  if (task.closed) {
+    tableBodyContent += '<td class="text-center"><button type="button" class="btn btn-default btn-sm btn-open-task"  taskid="' + task.id + '">Reopen</button></td>';
+  } else {
+    tableBodyContent += '<td class="text-center"><button type="button" class="btn btn-default btn-sm btn-close-task"  taskid="' + task.id + '">Close</button></td>';
+  }
   tableBodyContent += '</tr>';
   console.log(tableBodyContent);
   $('#tableBody').html(tableBodyContent);

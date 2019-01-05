@@ -9,7 +9,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,14 +38,6 @@ public class TaskVO implements Serializable{
       return "";
     }
     return StringUtils.join(this.superTaskIds, ",");
-  }
-
-  public void setSuperTaskIdsLabel(String superTaskIdsLabel) {
-    if (StringUtils.isBlank(superTaskIdsLabel)) {
-      return;
-    }
-
-    this.superTaskIds = Arrays.asList(StringUtils.split(superTaskIdsLabel, ","));
   }
 
   public static TaskVO of(Task task) {

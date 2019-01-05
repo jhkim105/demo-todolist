@@ -2,11 +2,14 @@ package com.example.todolist.controller;
 
 import com.example.todolist.model.Task;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +33,22 @@ public class TaskVO implements Serializable{
 
   private List<String> superTaskIds;
 
+  @JsonProperty
+  public String getSuperTaskIdsLabel() {
+    if (CollectionUtils.isEmpty(superTaskIds)) {
+      return "";
+    }
+    return StringUtils.join(this.superTaskIds, ",");
+  }
+
+  public void setSuperTaskIdsLabel(String superTaskIdsLabel) {
+    if (StringUtils.isBlank(superTaskIdsLabel)) {
+      return;
+    }
+
+    this.superTaskIds = Arrays.asList(StringUtils.split(superTaskIdsLabel, ","));
+  }
+
   public static TaskVO of(Task task) {
     TaskVO vo = new TaskVO();
     BeanUtils.copyProperties(task, vo);
@@ -37,7 +56,7 @@ public class TaskVO implements Serializable{
     if (!CollectionUtils.isEmpty(task.getSuperTasks())) {
       vo.setSuperTaskIds(task.getSuperTasks()
           .stream()
-          .map(superTask -> Task.SUPER_TASK_PREFIX + task.getId())
+          .map(superTask -> Task.SUPER_TASK_PREFIX + superTask.getId())
           .collect(Collectors.toList()));
     }
 

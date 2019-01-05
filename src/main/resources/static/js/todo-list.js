@@ -1,16 +1,18 @@
+var _baseUrl = "tasks";
+var _currentTaskId = '';
 
 $(function() {
 
   // close
   $('#table-tasks').on('click', '.btn-close-task', function() {
-    var taskId = $(this).attr('taskid');
+    _currentTaskId = $(this).attr('taskid');
     console.log(taskId);
 
     $.ajax({
       type: 'POST',
-      url: 'tasks/' + taskId + '/close',
+      url: _baseUrl + '/' + _currentTaskId + '/close',
       dataType: 'json'
-    }).done(function (result) {
+    }).done(function () {
       alert("SUCCESS");
       renderTable(0);
     }).fail(function (xhr) {
@@ -29,9 +31,15 @@ $(function() {
 
   // update-form
   $('#table-tasks').on('click', 'a.task-desc', function(event) {
-    console.log('update');
-    event.preventDefault();
-    $('#popup-task-form').modal('show');
+    _currentTaskId = $(this).attr('taskid');
+
+    $.get( _baseUrl + '/' + _currentTaskId)
+      .done(function(data) {
+        setTaskForm(data.description, data.superTaskIdsLabel);
+        event.preventDefault();
+        $('#popup-task-form').modal('show');
+    });
+
   });
 
 
@@ -39,8 +47,46 @@ $(function() {
   });
 
   $('#popup-task-form').on('hidden.bs.modal', function () {
+    // clear form
+    _currentTaskId = '';
+    setTaskForm('', '');
+
     renderTable(0);
   });
+
+  // save task
+  $('#btn-task-save').click(function(){
+    var description = $('#taskForm #description').val();
+    var superTaskIdsLabel = $('#taskForm #superTaskIdsLabel').val();
+    console.log(_currentTaskId, description, superTaskIdsLabel);
+    var data = {
+      'id': _currentTaskId,
+      'description': description,
+      'superTaskIdsLabel': superTaskIdsLabel
+    };
+
+    var httpMethod = _currentTaskId === '' ? 'POST' : 'PUT';
+    $.ajax({
+      type: httpMethod,
+      url: _baseUrl,
+      data: JSON.stringify(data),
+      contentType: 'application/json; charset=UTF-8',
+      dataType: 'json'
+    }).done(function (){
+      alert("SUCCESS");
+    }).fail(function (xhr){
+      console.log(xhr);
+      if (xhr.responseJSON && xhr.responseJSON.message) {
+        alert(xhr.responseJSON.message);
+      }
+    });
+  });
+
+
+
+
+
+
 
   renderTable(0);
 
@@ -52,6 +98,11 @@ function renderTable(pageNumber) {
     drawTable(data);
     $("#Pagination").pagination(data.totalElements, optInit);
   });
+}
+
+function setTaskForm(description, superTaskIdsLabel) {
+  $('#taskForm #description').val(description);
+  $('#taskForm #superTaskIdsLabel').val(superTaskIdsLabel);
 }
 
 

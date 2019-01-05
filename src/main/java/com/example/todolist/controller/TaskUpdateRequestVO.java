@@ -2,10 +2,11 @@ package com.example.todolist.controller;
 
 import com.example.todolist.model.Task;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class TaskUpdateRequestVO implements Serializable {
@@ -16,12 +17,15 @@ public class TaskUpdateRequestVO implements Serializable {
 
   private String description;
 
-  private List<String> superTaskIds;
+  private String superTaskIdsLabel;
 
   public Task fillTask(Task task) {
     task.setDescription(this.description);
-    task.setSuperTaskIds(this.superTaskIds);
+    if (StringUtils.isBlank(superTaskIdsLabel)) {
+      task.setSuperTaskIds(Arrays.asList(StringUtils.split(superTaskIdsLabel, ",")));
+    }
     task.setUpdatedAt(new Date());
+
     return task;
   }
 }

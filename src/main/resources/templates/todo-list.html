@@ -137,15 +137,15 @@
             <div class="modal-body">
               <div class="form-inline">
                 <label class="width150 top10">할일</label>
-                <input name="name" class="form-control input-sm width300" /><br>
+                <input id="description" name="description" class="form-control input-sm width300" /><br>
               </div>
               <div class="form-inline">
                 <label class="width150 top10">상위 할일</label>
-                <input name="sortSeq" class="form-control input-sm width300" placeholder="@1, @2"/><br>
+                <input id="superTaskIdsLabel" name="superTaskIdsLabel" class="form-control input-sm width300" placeholder="@1, @2"/><br>
               </div>
             </div>
             <div class="modal-footer">
-              <input type="submit" class="btn btn-primary" value="Save"/>
+              <button type="button" class="btn btn-primary" id="btn-task-save" data-dismiss="modal">Save</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>

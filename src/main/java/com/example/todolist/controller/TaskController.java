@@ -19,13 +19,21 @@ public class TaskController {
 
   @GetMapping
   @ApiOperation("list")
-  public Page<TaskVO> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
+  public Page<TaskVO> list(@RequestParam("page") int page, @RequestParam("size") int size) {
     Page<Task> taskPage = service.findPaginated(page, size);
 
     Page<TaskVO> resultPage = new PageImpl<>(TaskVO.of(taskPage.getContent()),
         taskPage.getPageable(), taskPage.getTotalElements());
 
     return resultPage;
+  }
+
+  @GetMapping("/{id}")
+  @ApiOperation("get")
+  public TaskVO get(@PathVariable Long id) {
+    Task task = service.findOne(id);
+
+    return TaskVO.of(task);
   }
 
   @PostMapping

@@ -29,24 +29,28 @@ public class TaskController {
   }
 
   @PostMapping
-  public Task create(@RequestBody TaskCreateRequestVO requestVO) {
-    return service.save(requestVO.toTask());
+  public TaskVO create(@RequestBody TaskCreateRequestVO requestVO) {
+    Task task = service.save(requestVO.toTask());
+    return TaskVO.of(task);
   }
 
   @PutMapping
-  public Task update(@RequestBody TaskUpdateRequestVO requestVO) {
+  public TaskVO update(@RequestBody TaskUpdateRequestVO requestVO) {
     Task task = service.findOne(requestVO.getId());
     task = requestVO.fillTask(task);
-    return service.save(task);
+    task = service.save(task);
+    return TaskVO.of(task);
   }
 
   @PostMapping(path="/{id}/close")
-  public Task close(@PathVariable Long id) {
-    return service.close(id);
+  public TaskVO close(@PathVariable Long id) {
+    Task task = service.close(id);
+    return TaskVO.of(task);
   }
 
   @PostMapping(path="/{id}/open")
-  public Task open(@PathVariable Long id) {
-    return service.open(id);
+  public TaskVO open(@PathVariable Long id) {
+    Task task = service.open(id);
+    return TaskVO.of(task);
   }
 }

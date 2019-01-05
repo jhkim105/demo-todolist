@@ -2,8 +2,7 @@
 $(function() {
 
   // close
-  $('.btn-close-task').on('click', function () {
-    alert('11111');
+  $('#table-tasks').on('click', '.btn-close-task', function() {
     var taskId = $(this).attr('taskid');
     console.log(taskId);
 
@@ -12,33 +11,55 @@ $(function() {
       url: 'tasks/' + taskId + '/close',
       dataType: 'json'
     }).done(function (result) {
-
-    }).fail(function (xhr, ajaxOptions, thrownError){
+      alert("SUCCESS");
+      renderTable(0);
+    }).fail(function (xhr) {
       console.log(xhr);
-      alert('Ajax call Fails..');
+      if (xhr.responseJSON && xhr.responseJSON.message) {
+        alert(xhr.responseJSON.message);
+      }
     });
   });
 
 
   // search
   $('#btn-search').click(function() {
-    var optInit = getOptionsFromForm();
-    getTasks(optInit.items_per_page, '0', function(data) {
-      drawTable(data);
-      $("#Pagination").pagination(data.totalElements, optInit);
-    });
+    renderTable(0);
+  });
+
+  // update-form
+  $('#table-tasks').on('click', 'a.task-desc', function(event) {
+    console.log('update');
+    event.preventDefault();
+    $('#popup-task-form').modal('show');
   });
 
 
+  $('#popup-task-form').on('show.bs.modal', function () {
+  });
+
+  $('#popup-task-form').on('hidden.bs.modal', function () {
+    renderTable(0);
+  });
+
+  renderTable(0);
+
 });
 
+function renderTable(pageNumber) {
+  var optInit = getOptionsFromForm();
+  getTasks(optInit.items_per_page, pageNumber, function(data) {
+    drawTable(data);
+    $("#Pagination").pagination(data.totalElements, optInit);
+  });
+}
 
 
 function addRow(task) {
   var tableBodyContent = $('#tableBody').html();
   tableBodyContent += '<tr class="odd gradeX">';
   tableBodyContent += '<td class="text-center">' + task.idx + '</td>';
-  tableBodyContent += '<td class="text-center">' + task.description + '</td>';
+  tableBodyContent += '<td class="text-center"><a href="#" class="task-desc" taskid="' + task.id + '">' + task.description + '</a></td>';
   tableBodyContent += '<td class="text-center">' + task.createdAt + '</a></td>';
   tableBodyContent += '<td class="text-center">' + task.updatedAt + '</td>';
   tableBodyContent += '<td class="text-center">' + task.closed + '</td>';

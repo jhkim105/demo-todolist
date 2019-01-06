@@ -26,7 +26,7 @@ public class TaskServiceImpl implements TaskService {
 
     Page<Task> taskPage = repository.findAll(pageRequest);
     if (page > taskPage.getTotalPages()) {
-      throw new RuntimeException(String.format("requested page[%s] is bigger than totalPages[%s]",
+      throw new IllegalArgumentException(String.format("requested page[%s] is bigger than totalPages[%s]",
           page, taskPage.getTotalPages()));
     }
     return taskPage;
@@ -59,7 +59,7 @@ public class TaskServiceImpl implements TaskService {
     Long id = Long.valueOf(StringUtils.removeStart(superTaskId, Task.SUPER_TASK_PREFIX));
     Task superTask = repository.getOne(id);
     if (superTask == null) {
-      throw new RuntimeException(String.format("Task[%s] not found.", id));
+      throw new NoSuchElementException(String.format("Task[%s] not found.", id));
     }
     task.getSuperTasks().add(superTask);
   }
@@ -68,10 +68,10 @@ public class TaskServiceImpl implements TaskService {
   public Task close(Long id) {
     Task task = findOne(id);
     if (task.isClosed()) {
-      throw new RuntimeException("Already closed.");
+      throw new IllegalStateException("Already closed.");
     }
     if (task.existsOpenedSubTasks()) {
-      throw new RuntimeException("Opened sub tasks exists");
+      throw new IllegalStateException("Opened sub tasks exists");
     }
 
     task.close();
@@ -82,7 +82,7 @@ public class TaskServiceImpl implements TaskService {
   public Task open(Long id) {
     Task task = findOne(id);
     if (task.isOpened()) {
-      throw new RuntimeException("Already Opened.");
+      throw new IllegalStateException("Already Opened.");
     }
 
     task.open();
@@ -94,7 +94,7 @@ public class TaskServiceImpl implements TaskService {
     try {
       return repository.findById(id).get();
     } catch(NoSuchElementException ex) {
-      throw new RuntimeException(String.format("Task[%s] not found.", id));
+      throw new NoSuchElementException(String.format("Task[%s] not found.", id));
     }
   }
 

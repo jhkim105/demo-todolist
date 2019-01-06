@@ -1,7 +1,6 @@
-package com.example.todolist.repository;
+package com.example.todolist.core.repository;
 
 import com.example.todolist.core.model.Task;
-import com.example.todolist.core.repository.TaskRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

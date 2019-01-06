@@ -1,7 +1,5 @@
-package com.example.todolist.service;
+package com.example.todolist.api.service;
 
-import com.example.todolist.api.service.TaskService;
-import com.example.todolist.api.service.TaskServiceImpl;
 import com.example.todolist.core.model.Task;
 import com.example.todolist.core.repository.TaskRepository;
 import org.junit.Test;

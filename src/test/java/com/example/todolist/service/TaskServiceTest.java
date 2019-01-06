@@ -1,7 +1,9 @@
 package com.example.todolist.service;
 
-import com.example.todolist.model.Task;
-import com.example.todolist.repository.TaskRepository;
+import com.example.todolist.api.service.TaskService;
+import com.example.todolist.api.service.TaskServiceImpl;
+import com.example.todolist.core.model.Task;
+import com.example.todolist.core.repository.TaskRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

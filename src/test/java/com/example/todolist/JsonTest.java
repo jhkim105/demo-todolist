@@ -1,6 +1,6 @@
 package com.example.todolist;
 
-import com.example.todolist.model.Task;
+import com.example.todolist.core.model.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

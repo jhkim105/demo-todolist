@@ -1,6 +1,6 @@
-package com.example.todolist.controller;
+package com.example.todolist.api.controller;
 
-import com.example.todolist.model.Task;
+import com.example.todolist.core.model.Task;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 

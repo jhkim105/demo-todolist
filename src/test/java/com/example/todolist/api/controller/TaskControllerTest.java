@@ -1,7 +1,7 @@
-package com.example.todolist.controller;
+package com.example.todolist.api.controller;
 
-import com.example.todolist.model.Task;
-import com.example.todolist.service.TaskService;
+import com.example.todolist.api.service.TaskService;
+import com.example.todolist.core.model.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

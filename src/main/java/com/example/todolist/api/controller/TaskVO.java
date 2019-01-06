@@ -1,6 +1,6 @@
-package com.example.todolist.controller;
+package com.example.todolist.api.controller;
 
-import com.example.todolist.model.Task;
+import com.example.todolist.core.model.Task;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.example.todolist.exception;
+package com.example.todolist.api.exception;
 
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

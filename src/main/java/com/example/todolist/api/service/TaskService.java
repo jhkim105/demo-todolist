@@ -1,6 +1,6 @@
-package com.example.todolist.service;
+package com.example.todolist.api.service;
 
-import com.example.todolist.model.Task;
+import com.example.todolist.core.model.Task;
 import org.springframework.data.domain.Page;
 
 public interface TaskService {

@@ -1,9 +1,10 @@
 package com.example.todolist;
 
-import com.example.todolist.model.*;
-import lombok.*;
+import com.example.todolist.core.model.Task;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-import java.util.*;
+import java.util.Date;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestData {

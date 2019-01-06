@@ -1,7 +1,7 @@
-package com.example.todolist.service;
+package com.example.todolist.api.service;
 
-import com.example.todolist.model.Task;
-import com.example.todolist.repository.TaskRepository;
+import com.example.todolist.core.model.Task;
+import com.example.todolist.core.repository.TaskRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

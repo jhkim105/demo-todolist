@@ -1,7 +1,7 @@
-package com.example.todolist.controller;
+package com.example.todolist.api.controller;
 
-import com.example.todolist.model.Task;
-import com.example.todolist.service.TaskService;
+import com.example.todolist.api.service.TaskService;
+import com.example.todolist.core.model.Task;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

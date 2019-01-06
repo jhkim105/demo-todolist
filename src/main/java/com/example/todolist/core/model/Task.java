@@ -1,4 +1,4 @@
-package com.example.todolist.model;
+package com.example.todolist.core.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

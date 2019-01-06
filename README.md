@@ -4,7 +4,7 @@
 [Spring Boot](https://spring.io/projects/spring-boot), JPA, jQuery, H2
  
 ## Requirements
-[Java 8](https://www.azul.com/downloads/azure-only/zulu), [Git](https://github.com/)
+[Java 8](https://www.azul.com/downloads/azure-only/zulu), [Git](https://git-scm.com/downloads/)
 
 ## Running TODO App
 

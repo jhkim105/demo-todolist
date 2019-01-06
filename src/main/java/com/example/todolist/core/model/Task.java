@@ -72,9 +72,14 @@ public class Task implements Serializable {
 
   @Transient
   public boolean existsOpenedSubTasks() {
-    if (CollectionUtils.isEmpty(subTasks))
+    if (CollectionUtils.isEmpty(this.subTasks))
       return false;
 
-    return subTasks.stream().filter(Task::isOpened).count() > 0l;
+    for (Task subTask : this.subTasks) {
+      if (subTask.isOpened()) {
+        return true;
+      }
+    }
+    return false;
   }
 }

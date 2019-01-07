@@ -1,4 +1,8 @@
 # TODO App
+## 사용 기술
+* JAVA 8, Spring Boot(WEB, JPA, H2)), Swagger
+* jQuery, Bootstrap
+
 ## 문제해결 전략
 * Task간의 관련 참조는 조인 객체에서 추가 속성(이를테면 연결 일시 등)이 필요하지 않으므로 Join class 없이 @ManyToMany 활용
 * 할일에 대하여 Close/Reopen 기능을 제공함
@@ -8,10 +12,6 @@
 * 실환경에서는 Swagger를 사용하지 않기 위하여 프로퍼티로 사용여부를 설정 가능하게 함
 * DB는 메모리 DB로 H2를 사용함
 
-## 사용 기술
-* JAVA 8, Spring Boot(WEB, JPA, H2)), Swagger
-* jQuery, Bootstrap
- 
 ## 필요 프로그램
 [Java 8](https://www.azul.com/downloads/azure-only/zulu), [Git](https://git-scm.com/downloads/)
 

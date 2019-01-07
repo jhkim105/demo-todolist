@@ -89,9 +89,9 @@ public class TaskControllerTest {
     given(taskService.findOne(task.getId())).willReturn(task);
 
     // when
-    ResultActions resultActions = mockMvc.perform(get(String.format("/tasks/%s", task.getId()))
-        .contentType(MediaType.APPLICATION_JSON));
-    resultActions.andDo(print());
+    ResultActions resultActions = mockMvc.perform(get(String.format("/tasks/%d", task.getId()))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print());
 
     // then
     resultActions.andExpect(status().isOk())
@@ -115,8 +115,8 @@ public class TaskControllerTest {
     ResultActions resultActions = mockMvc.perform(post("/tasks")
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8)
-        .content(body));
-    resultActions.andDo(print());
+        .content(body))
+        .andDo(print());
 
     // then
     resultActions.andExpect(jsonPath("$.description", is(task.getDescription())));
@@ -140,8 +140,8 @@ public class TaskControllerTest {
     ResultActions resultActions = mockMvc.perform(put("/tasks")
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8)
-        .content(body));
-    resultActions.andDo(print());
+        .content(body))
+        .andDo(print());
 
     // then
     resultActions.andExpect(jsonPath("$.description", is(task.getDescription())));
@@ -154,10 +154,10 @@ public class TaskControllerTest {
     given(taskService.close(task.getId())).willReturn(task);
 
     // when
-    ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%s/close", task.getId()))
+    ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%d/close", task.getId()))
         .contentType(MediaType.APPLICATION_JSON_UTF8)
-        .accept(MediaType.APPLICATION_JSON_UTF8));
-    resultActions.andDo(print());
+        .accept(MediaType.APPLICATION_JSON_UTF8))
+        .andDo(print());
 
     // then
     resultActions.andExpect(status().isOk());
@@ -170,10 +170,10 @@ public class TaskControllerTest {
     given(taskService.open(task.getId())).willReturn(task);
 
     // when
-    ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%s/open", task.getId()))
+    ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%d/open", task.getId()))
         .contentType(MediaType.APPLICATION_JSON_UTF8)
-        .accept(MediaType.APPLICATION_JSON_UTF8));
-    resultActions.andDo(print());
+        .accept(MediaType.APPLICATION_JSON_UTF8))
+        .andDo(print());
 
     // then
     resultActions.andExpect(status().isOk());

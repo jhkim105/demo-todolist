@@ -47,7 +47,7 @@ public class TaskVO implements Serializable{
     if (!CollectionUtils.isEmpty(task.getSuperTasks())) {
       vo.setSuperTaskIds(task.getSuperTasks()
           .stream()
-          .map(superTask -> Task.SUPER_TASK_PREFIX + superTask.getId())
+          .map(superTask -> superTask.getRefId())
           .collect(Collectors.toList()));
     }
 

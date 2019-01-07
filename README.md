@@ -1,6 +1,6 @@
 # TODO App
 ## 문제해결 전략
-* Task간의 관련 참조는 참조 객체에서 추가 속성(이를테면 연결 일시 등)이 필요하지 않으므로 Join class 없이 @ManyToMany 활용
+* Task간의 관련 참조는 조인 객체에서 추가 속성(이를테면 연결 일시 등)이 필요하지 않으므로 Join class 없이 @ManyToMany 활용
 * 할일에 대하여 Close/Reopen 기능을 제공함
 * Close시에는 하위 할일의 상태를 체크하지만, 반대로 Reopen시에는 상위 일감에 대한 상태 변경(Closed -> Open)에 대한 처리는 하지 않음
 * API에 입출력에 관한 클래스와 Domain Model을 위한 클래스를 분리(VO/Domain)

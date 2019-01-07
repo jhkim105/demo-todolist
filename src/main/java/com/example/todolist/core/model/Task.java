@@ -82,4 +82,9 @@ public class Task implements Serializable {
     }
     return false;
   }
+
+  @Transient
+  public String getRefId() {
+    return SUPER_TASK_PREFIX + this.id;
+  }
 }

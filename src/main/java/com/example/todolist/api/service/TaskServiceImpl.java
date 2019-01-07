@@ -36,12 +36,32 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public Task save(Task task) {
     List<String> superTaskIds = task.getSuperTaskIds();
+    checkSuperTaskIds(task, superTaskIds);
     task.getSuperTasks().clear();
     if (!CollectionUtils.isEmpty(superTaskIds)) {
       addSuperTasks(task, superTaskIds);
     }
 
     return repository.save(task);
+  }
+
+  private void checkSuperTaskIds(Task task, List<String> superTaskIds) {
+    if (CollectionUtils.isEmpty(superTaskIds)) {
+      return;
+    }
+
+    if (superTaskIds.contains(String.valueOf(task.getRefId()))) {
+      throw new IllegalArgumentException("Can't save itself as parent.");
+    }
+
+    if (!CollectionUtils.isEmpty(task.getSubTasks())) {
+      for (Task subTask : task.getSubTasks()) {
+        if (superTaskIds.contains(String.valueOf(subTask.getRefId()))) {
+          throw new IllegalArgumentException("Can't have children as parent.");
+        }
+      }
+    }
+
   }
 
   private void addSuperTasks(Task task, List<String> superTaskIds) {

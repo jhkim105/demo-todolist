@@ -25,7 +25,7 @@ public class TaskControllerIntegrationTest {
   private MockMvc mockMvc;
 
   @Test
-  public void list() throws Exception {
+  public void testList() throws Exception {
 
     mockMvc.perform(get("/tasks")
         .param("page", "0")
@@ -36,4 +36,5 @@ public class TaskControllerIntegrationTest {
         .andExpect(jsonPath("$.content", hasSize(4)))
         .andExpect(jsonPath("$.totalElements", is(4)));
   }
+
 }

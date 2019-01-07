@@ -26,7 +26,7 @@ public class TaskRepositoryTest {
   private TaskRepository taskRepository;
 
   @Test
-  public void findById() {
+  public void testFindById() {
     // given
     Task task = new Task();
     task.setDescription("test description");
@@ -43,7 +43,7 @@ public class TaskRepositoryTest {
   }
 
   @Test(expected = NoSuchElementException.class)
-  public void findById_notFound() {
+  public void testFindById_notFound() {
     // when
     Optional<Task> taskOptional = taskRepository.findById(1212l);
     taskOptional.get();

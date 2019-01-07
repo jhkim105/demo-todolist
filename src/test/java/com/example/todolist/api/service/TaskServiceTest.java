@@ -1,5 +1,6 @@
 package com.example.todolist.api.service;
 
+import com.example.todolist.TestUtils;
 import com.example.todolist.core.model.Task;
 import com.example.todolist.core.repository.TaskRepository;
 import org.junit.Test;
@@ -34,15 +35,12 @@ public class TaskServiceTest {
   @MockBean
   private TaskRepository taskRepository;
 
-
-
-
   @Test
-  public void close() throws Exception {
+  public void testClose() {
     // given
-    final long sampleTaskId = -1;
-    Task sampleTask = newTask(sampleTaskId, false, "This is open task.");
-    Task sampleSubTask = newTask(-2, true, "This is closed sub task");
+    final long sampleTaskId = 1L;
+    Task sampleTask = TestUtils.newTask(sampleTaskId, false, "This is open task.");
+    Task sampleSubTask = TestUtils.newTask(2L, true, "This is closed sub task");
     sampleTask.getSubTasks().add(sampleSubTask);
 
     Mockito.when(taskRepository.findById(sampleTask.getId()))
@@ -60,11 +58,11 @@ public class TaskServiceTest {
   }
 
   @Test(expected = IllegalStateException.class)
-  public void close_fail_existsOpenSubTasks() throws Exception {
+  public void testClose_fail_existsOpenSubTasks() {
     // given
-    final long sampleTaskId = -1;
-    Task sampleTask = newTask(sampleTaskId, false, "This is open task.");
-    Task sampleSubTask = newTask(-2, false, "This is open sub task");
+    final long sampleTaskId = 1L;
+    Task sampleTask = TestUtils.newTask(sampleTaskId, false, "This is open task.");
+    Task sampleSubTask = TestUtils.newTask(2L, false, "This is open sub task");
     sampleTask.getSubTasks().add(sampleSubTask);
 
     Mockito.when(taskRepository.findById(sampleTask.getId()))
@@ -82,10 +80,10 @@ public class TaskServiceTest {
   }
 
   @Test(expected = IllegalStateException.class)
-  public void close_fail_alreadyClosedTask() {
+  public void testClose_fail_alreadyClosedTask() {
     // given
     final long sampleTaskId = -1;
-    Task sampleTask = newTask(sampleTaskId, true, "This is closed task.");
+    Task sampleTask = TestUtils.newTask(sampleTaskId, true, "This is closed task.");
 
     Mockito.when(taskRepository.findById(sampleTask.getId()))
         .thenReturn(Optional.of(sampleTask));
@@ -94,14 +92,14 @@ public class TaskServiceTest {
         .thenReturn(sampleTask);
 
     // when
-    Task task = taskService.close(sampleTaskId);
+    taskService.close(sampleTaskId);
   }
 
   @Test
-  public void open() {
+  public void testOpen() {
     // given
     final long sampleTaskId = -1;
-    Task sampleTask = newTask(sampleTaskId, true, "This is closed task.");
+    Task sampleTask = TestUtils.newTask(sampleTaskId, true, "This is closed task.");
 
     Mockito.when(taskRepository.findById(sampleTask.getId()))
         .thenReturn(Optional.of(sampleTask));
@@ -110,14 +108,14 @@ public class TaskServiceTest {
         .thenReturn(sampleTask);
 
     // when
-    Task task = taskService.open(sampleTaskId);
+    taskService.open(sampleTaskId);
   }
 
   @Test(expected = IllegalStateException.class)
-  public void open_fail_alreadyOpen() {
+  public void testOpen_fail_alreadyOpen() {
     // given
     final long sampleTaskId = -1;
-    Task sampleTask = newTask(sampleTaskId, false, "This is open task.");
+    Task sampleTask = TestUtils.newTask(sampleTaskId, false, "This is open task.");
 
     Mockito.when(taskRepository.findById(sampleTask.getId()))
         .thenReturn(Optional.of(sampleTask));
@@ -126,15 +124,8 @@ public class TaskServiceTest {
         .thenReturn(sampleTask);
 
     // when
-    Task task = taskService.open(sampleTaskId);
+    taskService.open(sampleTaskId);
   }
 
-  private Task newTask(long id, boolean closed, String description) {
-    Task task = new Task();
-    task.setDescription(description);
-    task.setId(id);
-    task.setClosed(closed);
-    return task;
-  }
 
 }

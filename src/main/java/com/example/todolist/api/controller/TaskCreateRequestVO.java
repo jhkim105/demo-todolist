@@ -13,8 +13,6 @@ public class TaskCreateRequestVO implements Serializable {
 
   private static final long serialVersionUID = -7528052965360517601L;
 
-  private String id;
-
   private String description;
 
   private String superTaskIdsLabel;

@@ -1,7 +1,15 @@
 var _baseUrl = "tasks";
 var _currentTaskId = '';
+var _currentPageNumber = 0;
 
 $(function() {
+  $('#items_per_page').val($('#pageSize').val());
+
+  $('#pageSize').change(function(){
+    var val = $(this).val();
+    $('#items_per_page').val(val);
+    renderTable(0);
+  });
 
   // close
   $('#table-tasks').on('click', '.btn-close-task', function() {
@@ -14,12 +22,14 @@ $(function() {
       dataType: 'json'
     }).done(function () {
       alert("SUCCESS");
-      renderTable(0);
+      renderTable(_currentPageNumber);
     }).fail(function (xhr) {
       console.log(xhr);
+      var message = '';
       if (xhr.responseJSON && xhr.responseJSON.message) {
-        alert(xhr.responseJSON.message);
+        message = xhr.responseJSON.message;
       }
+      alert("ERROR::" + message);
     });
   });
 
@@ -34,12 +44,13 @@ $(function() {
       dataType: 'json'
     }).done(function () {
       alert("SUCCESS");
-      renderTable(0);
+      renderTable(_currentPageNumber);
     }).fail(function (xhr) {
-      console.log(xhr);
+      var message = '';
       if (xhr.responseJSON && xhr.responseJSON.message) {
-        alert(xhr.responseJSON.message);
+        message = xhr.responseJSON.message;
       }
+      alert("ERROR::" + message);
     });
   });
 
@@ -52,6 +63,7 @@ $(function() {
   // create-form
   $('#btn-create').click(function(){
     _currentTaskId = '';
+    _currentPageNumber = 0;
     setTaskForm('', '');
     event.preventDefault();
     $('#popup-task-form').modal('show');
@@ -79,7 +91,7 @@ $(function() {
     _currentTaskId = '';
     setTaskForm('', '');
 
-    renderTable(0);
+    renderTable(_currentPageNumber);
   });
 
   // save task
@@ -103,17 +115,13 @@ $(function() {
     }).done(function (){
       alert("SUCCESS");
     }).fail(function (xhr){
-      console.log(xhr);
+      var message = '';
       if (xhr.responseJSON && xhr.responseJSON.message) {
-        alert(xhr.responseJSON.message);
+        message = xhr.responseJSON.message;
       }
+      alert("ERROR::" + message);
     });
   });
-
-
-
-
-
 
 
   renderTable(0);
@@ -121,10 +129,12 @@ $(function() {
 });
 
 function renderTable(pageNumber) {
-  var optInit = getOptionsFromForm();
-  getTasks(optInit.items_per_page, pageNumber, function(data) {
+  $('#current_page').val(pageNumber);
+  _currentPageNumber = pageNumber;
+  var options = getOptionsFromForm();
+  getTasks(options.items_per_page, pageNumber, function(data) {
     drawTable(data);
-    $("#Pagination").pagination(data.totalElements, optInit);
+    $("#Pagination").pagination(data.totalElements, options);
   });
 }
 
@@ -204,6 +214,7 @@ function getTasksAndWriteTableBody(pageSize, pageNo) {
 }
 
 function pageSelectCallback(page_index, jq) {
+  _currentPageNumber = page_index;
   var items_per_page = $('#items_per_page').val();
   console.log('pageSelectCallback::items_per_page:', items_per_page);
   getTasksAndWriteTableBody(items_per_page, page_index);

@@ -167,7 +167,7 @@ public class TaskControllerTest {
   public void testOpen() throws Exception {
     // given
     Task task = TestUtils.newTask(1L, false, "task");
-    given(taskService.close(task.getId())).willReturn(task);
+    given(taskService.open(task.getId())).willReturn(task);
 
     // when
     ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%s/open", task.getId()))

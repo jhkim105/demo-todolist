@@ -5,7 +5,6 @@ import com.example.todolist.api.service.TaskService;
 import com.example.todolist.core.model.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.core.Is;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,6 +46,7 @@ public class TaskControllerTest {
 
   @Test
   public void testList() throws Exception {
+    // given
     Task task1= TestUtils.newTask(1L, false, "task1");
     Task task2= TestUtils.newTask(2L, false, "task2");
 
@@ -57,12 +55,15 @@ public class TaskControllerTest {
     Page<Task> page = new PageImpl(taskList, PageRequest.of(0, 10), 2);
     given(taskService.findPaginated(0, 10)).willReturn(page);
 
-    mockMvc.perform(get("/tasks")
+    // when
+    ResultActions resultActions = mockMvc.perform(get("/tasks")
         .param("page", "0")
         .param("size", "10")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
+        .contentType(MediaType.APPLICATION_JSON));
+    resultActions.andDo(print());
+
+    // then
+    resultActions.andExpect(status().isOk())
         .andExpect(jsonPath("$.content", hasSize(2)))
         .andExpect(jsonPath("$.totalElements", CoreMatchers.is(2)))
         .andExpect(jsonPath("$.content[0].description", is(task1.getDescription())))
@@ -80,16 +81,20 @@ public class TaskControllerTest {
 
   @Test
   public void testGet() throws Exception {
+    // given
     Task task = TestUtils.newTask(1L, false, "task1");
     Task superTask = TestUtils.newTask(2L, false, "super task");
     task.getSuperTasks().add(superTask);
     TaskVO taskVO = TaskVO.of(task);
     given(taskService.findOne(task.getId())).willReturn(task);
 
-    mockMvc.perform(get(String.format("/tasks/%s", task.getId()))
-        .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
+    // when
+    ResultActions resultActions = mockMvc.perform(get(String.format("/tasks/%s", task.getId()))
+        .contentType(MediaType.APPLICATION_JSON));
+    resultActions.andDo(print());
+
+    // then
+    resultActions.andExpect(status().isOk())
         .andExpect(jsonPath("$.description", is(taskVO.getDescription())))
         .andExpect(jsonPath("$.superTaskIdsLabel", is(taskVO.getSuperTaskIdsLabel())));
   }
@@ -107,14 +112,14 @@ public class TaskControllerTest {
     String body = TestUtils.toJsonString(taskCreateRequestVO);
 
     // when
-    ResultActions result = mockMvc.perform(post("/tasks")
+    ResultActions resultActions = mockMvc.perform(post("/tasks")
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8)
         .content(body));
-    result.andDo(print());
+    resultActions.andDo(print());
 
     // then
-    result.andExpect(jsonPath("$.description", is(task.getDescription())));
+    resultActions.andExpect(jsonPath("$.description", is(task.getDescription())));
 
   }
 
@@ -132,22 +137,46 @@ public class TaskControllerTest {
     String body = TestUtils.toJsonString(taskUpdateRequestVO);
 
     // when
-    ResultActions result = mockMvc.perform(put("/tasks")
+    ResultActions resultActions = mockMvc.perform(put("/tasks")
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8)
         .content(body));
-    result.andDo(print());
+    resultActions.andDo(print());
 
     // then
-    result.andExpect(jsonPath("$.description", is(task.getDescription())));
+    resultActions.andExpect(jsonPath("$.description", is(task.getDescription())));
   }
 
-  public void testClose() {
+  @Test
+  public void testClose() throws Exception {
+    // given
+    Task task = TestUtils.newTask(1L, true, "task");
+    given(taskService.close(task.getId())).willReturn(task);
 
+    // when
+    ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%s/close", task.getId()))
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        .accept(MediaType.APPLICATION_JSON_UTF8));
+    resultActions.andDo(print());
+
+    // then
+    resultActions.andExpect(status().isOk());
   }
 
-  public void testOpen() {
+  @Test
+  public void testOpen() throws Exception {
+    // given
+    Task task = TestUtils.newTask(1L, false, "task");
+    given(taskService.close(task.getId())).willReturn(task);
 
+    // when
+    ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%s/open", task.getId()))
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        .accept(MediaType.APPLICATION_JSON_UTF8));
+    resultActions.andDo(print());
+
+    // then
+    resultActions.andExpect(status().isOk());
   }
 
 

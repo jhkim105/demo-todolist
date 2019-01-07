@@ -156,6 +156,7 @@ function addRow(task) {
   tableBodyContent += '<tr class="odd gradeX">';
   tableBodyContent += '<td class="text-center">' + task.id + '</td>';
   tableBodyContent += '<td class="text-center"><a href="#" class="task-desc" taskid="' + task.id + '">' + task.description + '</a></td>';
+  tableBodyContent += '<td class="text-center">' + task.superTaskIdsLabel + '</td>';
   tableBodyContent += '<td class="text-center">' + task.createdAt + '</a></td>';
   tableBodyContent += '<td class="text-center">' + task.updatedAt + '</td>';
   tableBodyContent += '<td class="text-center">' + closedLabel + '</td>';
@@ -196,6 +197,7 @@ function drawTable(data) {
       var task = {
         idx : page * pageSize + i + 1,
         description : list[i].description,
+        superTaskIdsLabel : list[i].superTaskIdsLabel,
         createdAt : list[i].createdAt,
         updatedAt : list[i].updatedAt,
         id : list[i].id,

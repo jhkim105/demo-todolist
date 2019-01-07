@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.Date;
 
 @Data
 public class TaskCreateRequestVO implements Serializable {
@@ -23,10 +22,6 @@ public class TaskCreateRequestVO implements Serializable {
     if (StringUtils.isNotBlank(superTaskIdsLabel)) {
       task.setSuperTaskIds(Arrays.asList(StringUtils.split(superTaskIdsLabel, ",")));
     }
-
-    Date now = new Date();
-    task.setCreatedAt(now);
-    task.setUpdatedAt(now);
 
     return task;
   }

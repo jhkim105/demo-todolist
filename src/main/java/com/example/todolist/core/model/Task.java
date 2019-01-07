@@ -5,6 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -20,6 +23,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = false, of = {"id"})
 @ToString(exclude = {"superTasks", "subTasks"})
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Task implements Serializable {
 
   private static final long serialVersionUID = -1249432540792537720L;
@@ -36,10 +40,12 @@ public class Task implements Serializable {
   @ColumnDefault("0")
   private boolean closed;
 
-  @Column(name = "created_at")
+  @Column(name = "created_at", updatable = false)
+  @CreatedDate
   private Date createdAt;
 
   @Column(name = "updated_at")
+  @LastModifiedDate
   private Date updatedAt;
 
   @Transient

@@ -1,7 +1,9 @@
 package com.example.todolist.api.controller;
 
 import com.example.todolist.TestUtils;
+import com.example.todolist.api.security.AuthService;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,24 @@ public class TaskControllerIntegrationTest {
   @Autowired
   private MockMvc mockMvc;
 
+  @Autowired
+  private AuthService authService;
+
+  private String authToken;
+
+  @Before
+  public void before() {
+    authToken = authService.getAuthToken("user", "user").getAuthToken();
+  }
+
+
   @Test
   public void testList() throws Exception {
     // when
     ResultActions resultActions = mockMvc.perform(get("/tasks")
         .param("page", "0")
         .param("size", "10")
+        .param("authToken", authToken)
         .contentType(MediaType.APPLICATION_JSON))
         .andDo(print());
 
@@ -47,6 +61,7 @@ public class TaskControllerIntegrationTest {
     Long taskId = 1L;
     // when
     ResultActions resultActions = mockMvc.perform(get(String.format("/tasks/%d", taskId))
+        .param("authToken", authToken)
         .contentType(MediaType.APPLICATION_JSON))
         .andDo(print());
 
@@ -64,6 +79,7 @@ public class TaskControllerIntegrationTest {
     String body = TestUtils.toJsonString(taskCreateRequestVO);
 
     ResultActions resultActions = mockMvc.perform(post("/tasks")
+        .param("authToken", authToken)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8)
         .content(body))
@@ -83,6 +99,7 @@ public class TaskControllerIntegrationTest {
 
     String body = TestUtils.toJsonString(taskUpdateRequestVO);
     ResultActions resultActions = mockMvc.perform(put("/tasks")
+        .param("authToken", authToken)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8)
         .content(body))
@@ -103,6 +120,7 @@ public class TaskControllerIntegrationTest {
 
     String body = TestUtils.toJsonString(taskUpdateRequestVO);
     ResultActions resultActions = mockMvc.perform(put("/tasks")
+        .param("authToken", authToken)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8)
         .content(body))
@@ -122,6 +140,7 @@ public class TaskControllerIntegrationTest {
 
     String body = TestUtils.toJsonString(taskUpdateRequestVO);
     ResultActions resultActions = mockMvc.perform(put("/tasks")
+        .param("authToken", authToken)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8)
         .content(body))
@@ -136,6 +155,7 @@ public class TaskControllerIntegrationTest {
     // when
     Long taskId = 2L;
     ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%d/close", taskId))
+        .param("authToken", authToken)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8))
         .andDo(print());
@@ -149,6 +169,7 @@ public class TaskControllerIntegrationTest {
     // when
     Long taskId = 1L;
     ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%d/close", taskId))
+        .param("authToken", authToken)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8))
         .andDo(print());
@@ -162,6 +183,7 @@ public class TaskControllerIntegrationTest {
     Long taskId = 2L;
     // when
     ResultActions resultActions = mockMvc.perform(post(String.format("/tasks/%d/open", taskId))
+        .param("authToken", authToken)
         .contentType(MediaType.APPLICATION_JSON_UTF8)
         .accept(MediaType.APPLICATION_JSON_UTF8))
         .andDo(print());

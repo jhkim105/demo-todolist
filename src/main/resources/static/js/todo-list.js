@@ -1,8 +1,26 @@
 var _baseUrl = "tasks";
 var _currentTaskId = '';
 var _currentPageNumber = 0;
+var headers = {};
 
 $(function() {
+  var authToken = $.session.get("authToken");
+  if (authToken) {
+    console.log('authToken exists.')
+    console.log(authToken)
+    headers["X-Auth-Token"] = authToken;
+  } else {
+    console.log('authToken is empty.')
+    location.href = '/login';
+  }
+
+
+  // logout
+  $('#link-logout').on('click', function (){
+    $.session.remove("authToken");
+    location.href = "/login";
+  });
+
   $('#items_per_page').val($('#pageSize').val());
 
   $('#pageSize').change(function(){
@@ -19,6 +37,7 @@ $(function() {
     $.ajax({
       type: 'POST',
       url: _baseUrl + '/' + taskId + '/close',
+      headers: headers,
       dataType: 'json'
     }).done(function () {
       alert("SUCCESS");
@@ -41,6 +60,7 @@ $(function() {
     $.ajax({
       type: 'POST',
       url: _baseUrl + '/' + taskId + '/open',
+      headers: headers,
       dataType: 'json'
     }).done(function () {
       alert("SUCCESS");
@@ -73,7 +93,7 @@ $(function() {
   $('#table-tasks').on('click', 'a.task-desc', function(event) {
     _currentTaskId = $(this).attr('taskid');
 
-    $.get( _baseUrl + '/' + _currentTaskId)
+    $.get( _baseUrl + '/' + _currentTaskId, {'authToken': authToken})
       .done(function(data) {
         setTaskForm(data.description, data.superTaskIdsLabel);
         event.preventDefault();
@@ -109,6 +129,7 @@ $(function() {
     $.ajax({
       type: httpMethod,
       url: _baseUrl,
+      headers: headers,
       data: JSON.stringify(data),
       contentType: 'application/json; charset=UTF-8',
       dataType: 'json'
@@ -177,6 +198,7 @@ function getTasks(pageSize, pageNumber, callback) {
     type : 'get',
     async : false,
     url : 'tasks',
+    headers: headers,
     data : searchParam,
     dataType : 'json'
   }).done(function(data) {

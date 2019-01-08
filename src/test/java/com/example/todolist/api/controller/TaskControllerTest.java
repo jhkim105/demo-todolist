@@ -1,6 +1,7 @@
 package com.example.todolist.api.controller;
 
 import com.example.todolist.TestUtils;
+import com.example.todolist.WebMvcTestExclude;
 import com.example.todolist.api.service.TaskService;
 import com.example.todolist.core.model.Task;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +36,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(TaskController.class)
+@WebMvcTest(value = TaskController.class)
+@ComponentScan(excludeFilters = @ComponentScan.Filter(WebMvcTestExclude.class))
 @Slf4j
 public class TaskControllerTest {
 

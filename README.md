@@ -1,6 +1,6 @@
 # TODO App
 ## 사용 기술
-* JAVA 8, Spring Boot(WEB, JPA, H2)), Swagger
+* JAVA 8, Spring Boot(WEB, JPA, H2), Swagger
 * jQuery, Bootstrap
 
 ## 문제해결 전략

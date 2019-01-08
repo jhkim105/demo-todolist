@@ -17,11 +17,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//  @Bean
-//  public UserDetailsServiceImpl userDetailsService() {
-//    return new UserDetailsServiceImpl();
-//  }
-
   @Override
   public void configure(WebSecurity web) {
     web.ignoring().antMatchers("/resources/**", "/js/**", "/css/**", "/webjars/**",
@@ -43,6 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .csrf().disable();
     // @formatter:on
   }
+
+  @Bean
+  public UserDetailsServiceImpl userDetailsService() {
+    return new UserDetailsServiceImpl();
+  }
+
   @Bean
   public PasswordEncoder passwordEncoder() {
     return NoOpPasswordEncoder.getInstance();

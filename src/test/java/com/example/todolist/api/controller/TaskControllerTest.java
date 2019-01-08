@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(TaskController.class)
 @Slf4j
-@Ignore
+@Ignore("Field userRepository in com.example.todolist.api.security.UserDetailsServiceImpl required a bean of type 'com.example.todolist.core.repository.UserRepository' that could not be found.")
 public class TaskControllerTest {
 
   @Autowired

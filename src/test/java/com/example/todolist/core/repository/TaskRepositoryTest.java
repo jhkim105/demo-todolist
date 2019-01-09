@@ -57,4 +57,18 @@ public class TaskRepositoryTest {
     assertThat(page.getTotalElements()).isEqualTo(1);
   }
 
+  @Test
+  public void testFindAll() {
+    Page<Task> page = taskRepository.findAll(PageRequest.of(0, 10), "", false);
+    assertThat(page.getContent().size()).isEqualTo(4);
+    assertThat(page.getTotalElements()).isEqualTo(4);
+  }
+
+  @Test
+  public void testFindAll_검색어_집_완료되지않은일감만_2페이지_조회() {
+    Page<Task> page = taskRepository.findAll(PageRequest.of(1, 2), "청", true);
+    assertThat(page.getContent().size()).isEqualTo(0);
+    assertThat(page.getTotalElements()).isEqualTo(2);
+  }
+
 }

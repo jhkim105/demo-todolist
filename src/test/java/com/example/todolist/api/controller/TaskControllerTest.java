@@ -56,7 +56,7 @@ public class TaskControllerTest {
     List<Task> taskList = Arrays.asList(task1, task2);
 
     Page<Task> page = new PageImpl(taskList, PageRequest.of(0, 10), 2);
-    given(taskService.findAll(PageRequest.of(0, 10))).willReturn(page);
+    given(taskService.findAll(PageRequest.of(0, 10), new SearchVO())).willReturn(page);
 
     // when
     ResultActions resultActions = mockMvc.perform(get("/tasks")

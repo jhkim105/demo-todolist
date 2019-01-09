@@ -190,7 +190,11 @@ function addRow(task) {
 
 function getTasks(pageSize, pageNumber, callback) {
   var q = $('#q').val();
-  var searchParam = {'page': pageNumber, 'size': pageSize, 'orders': ['id', 'createdAt'], 'direction': 'DESC', 'q': q};
+  var open = false;
+  if ($("#checkbox-open").is(':checked')) {
+    open = true;
+  }
+  var searchParam = {'page': pageNumber, 'size': pageSize, 'orders': ['id', 'createdAt'], 'direction': 'DESC', 'q': q, 'open': open};
 
   $.ajax({
     type : 'get',

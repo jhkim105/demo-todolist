@@ -1,5 +1,6 @@
 package com.example.todolist.api.service;
 
+import com.example.todolist.api.controller.SearchVO;
 import com.example.todolist.core.model.Task;
 import com.example.todolist.core.repository.TaskRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -32,13 +33,8 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
-  public Page<Task> findAll(Pageable page, String q) {
-    Page<Task> taskPage;
-    if (StringUtils.isBlank(q)) {
-      taskPage = repository.findAll(page);
-    } else {
-      taskPage = repository.findAllByDescriptionLike(page, "%" + q + "%");
-    }
+  public Page<Task> findAll(Pageable page, SearchVO searchVO) {
+    Page<Task> taskPage = repository.findAll(page, searchVO.getQ(), searchVO.isOpen());;
 
     if (page.getPageNumber() > taskPage.getTotalPages()) {
       throw new IllegalArgumentException(String.format("requested page[%s] is bigger than totalPages[%s]",

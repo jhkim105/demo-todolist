@@ -23,13 +23,8 @@ public class TaskController {
 
   @GetMapping
   @ApiOperation("list")
-  public Page<TaskVO> list(PageRequestVO pageRequestVO, String q) {
-    Page<Task> taskPage;
-    if (StringUtils.isBlank(q)) {
-      taskPage = service.findAll(pageRequestVO.toPageRequet());
-    } else {
-      taskPage = service.findAll(pageRequestVO.toPageRequet(), "%" + q + "%");
-    }
+  public Page<TaskVO> list(PageRequestVO pageRequestVO, SearchVO searchVO) {
+    Page<Task> taskPage = service.findAll(pageRequestVO.toPageRequet(), searchVO);;
 
     Page<TaskVO> resultPage = new PageImpl<>(TaskVO.of(taskPage.getContent()),
         taskPage.getPageable(), taskPage.getTotalElements());

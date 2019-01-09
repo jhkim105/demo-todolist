@@ -28,7 +28,9 @@ cd demo-todolist
 
 빌드 없이 바로 시작하기
 * Maven이 설치되어 있는 경우 mvn을 사용
-* Maven이 설치되어 있지 않은 경우 mvnw (Windows에서는 mvnw.cmd) 사용 
+* Maven이 설치되어 있지 않은 경우 mvnw 사용
+  * Windows - mvnw.cmd 사용
+  * Mac/Linux - 실행권한 부여(chmod a+x mvnw)후 실행
 ```
 ./mvnw spring-boot:run
 ```

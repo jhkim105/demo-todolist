@@ -5,12 +5,10 @@ import com.example.todolist.core.model.Task;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "tasks")
@@ -24,7 +22,7 @@ public class TaskController {
   @GetMapping
   @ApiOperation("list")
   public Page<TaskVO> list(PageRequestVO pageRequestVO, SearchVO searchVO) {
-    Page<Task> taskPage = service.findAll(pageRequestVO.toPageRequet(), searchVO);;
+    Page<Task> taskPage = service.findAll(pageRequestVO.toPageRequet(), searchVO);
 
     Page<TaskVO> resultPage = new PageImpl<>(TaskVO.of(taskPage.getContent()),
         taskPage.getPageable(), taskPage.getTotalElements());
@@ -52,6 +50,13 @@ public class TaskController {
     task = requestVO.fillTask(task);
     task = service.save(task);
     return TaskVO.of(task);
+  }
+
+  @DeleteMapping("/{id}")
+  @ApiOperation("delete")
+  public ResponseEntity delete(@PathVariable Long id) {
+    service.delete(id);
+    return new ResponseEntity(HttpStatus.OK);
   }
 
   @PostMapping(path="/{id}/close")

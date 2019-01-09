@@ -6,9 +6,7 @@ import com.example.todolist.core.repository.TaskRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -18,15 +16,14 @@ import java.util.NoSuchElementException;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-  @Autowired
-  private TaskRepository repository;
+  @Autowired private TaskRepository repository;
 
   @Override
   public Page<Task> findAll(Pageable page) {
     Page<Task> taskPage = repository.findAll(page);
     if (page.getPageNumber() > taskPage.getTotalPages()) {
-      throw new IllegalArgumentException(String.format("requested page[%s] is bigger than totalPages[%s]",
-          page, taskPage.getTotalPages()));
+      throw new IllegalArgumentException(
+          String.format("requested page[%s] is bigger than totalPages[%s]", page, taskPage.getTotalPages()));
     }
     return taskPage;
 
@@ -34,11 +31,11 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public Page<Task> findAll(Pageable page, SearchVO searchVO) {
-    Page<Task> taskPage = repository.findAll(page, searchVO.getQ(), searchVO.isOpen());;
+    Page<Task> taskPage = repository.findAll(page, searchVO.getQ(), searchVO.isOpen());
 
     if (page.getPageNumber() > taskPage.getTotalPages()) {
-      throw new IllegalArgumentException(String.format("requested page[%s] is bigger than totalPages[%s]",
-          page, taskPage.getTotalPages()));
+      throw new IllegalArgumentException(
+          String.format("requested page[%s] is bigger than totalPages[%s]", page, taskPage.getTotalPages()));
     }
     return taskPage;
   }
@@ -123,9 +120,18 @@ public class TaskServiceImpl implements TaskService {
   public Task findOne(Long id) {
     try {
       return repository.findById(id).get();
-    } catch(NoSuchElementException ex) {
+    } catch (NoSuchElementException ex) {
       throw new NoSuchElementException(String.format("Task[%s] not found.", id));
     }
+  }
+
+  @Override
+  public void delete(Long id) {
+    Task task = findOne(id);
+    if (!CollectionUtils.isEmpty(task.getSubTasks())) {
+      throw new IllegalStateException("Can't delete. Sub tasks exists.");
+    }
+    repository.deleteById(id);
   }
 
 }

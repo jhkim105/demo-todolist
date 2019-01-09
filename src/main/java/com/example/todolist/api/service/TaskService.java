@@ -19,4 +19,5 @@ public interface TaskService {
 
   Task findOne(Long id);
 
+  void delete(Long id);
 }

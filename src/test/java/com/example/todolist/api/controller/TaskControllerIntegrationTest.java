@@ -187,4 +187,28 @@ public class TaskControllerIntegrationTest {
     resultActions.andExpect(status().isConflict());
   }
 
+  @Test
+  public void testDelete() throws Exception {
+    Long taskId = 2L;
+    // when
+    ResultActions resultActions = mockMvc.perform(delete(String.format("/tasks/%d", taskId))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print());
+
+    // then
+    resultActions.andExpect(status().isOk());
+  }
+
+  @Test
+  public void testDelete_fail() throws Exception {
+    Long taskId = 1L;
+    // when
+    ResultActions resultActions = mockMvc.perform(delete(String.format("/tasks/%d", taskId))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print());
+
+    // then
+    resultActions.andExpect(status().isConflict());
+  }
+
 }

@@ -72,6 +72,8 @@ $(function() {
     setTaskForm('', '');
     event.preventDefault();
     $('#popup-task-form').modal('show');
+    $('#btn-task-delete').removeClass('visible');
+    $('#btn-task-delete').addClass('invisible');
   });
 
   // update-form
@@ -83,6 +85,8 @@ $(function() {
         setTaskForm(data.description, data.superTaskIdsLabel);
         event.preventDefault();
         $('#popup-task-form').modal('show');
+        $('#btn-task-delete').removeClass('invisible');
+        $('#btn-task-delete').addClass('visible');
     });
 
   });
@@ -125,6 +129,27 @@ $(function() {
         message = xhr.responseJSON.message;
       }
       alert("ERROR::" + message);
+    });
+  });
+
+  // save task
+  $('#btn-task-delete').click(function(){
+
+    $.ajax({
+      type: 'DELETE',
+      url: _baseUrl + "/" + _currentTaskId,
+      contentType: 'application/json; charset=UTF-8',
+      dataType: 'json'
+    }).done(function (){
+      alert("SUCCESS");
+    }).fail(function (xhr){
+      console.log(xhr);
+      var message;
+      if (xhr.responseJSON && xhr.responseJSON.message) {
+        message = xhr.responseJSON.message;
+      }
+      if (message)
+        alert("ERROR::" + message);
     });
   });
 
@@ -184,7 +209,6 @@ function addRow(task) {
     tableBodyContent += '<td class="text-center"><button type="button" class="btn btn-default btn-sm btn-close-task"  taskid="' + task.id + '">Close</button></td>';
   }
   tableBodyContent += '</tr>';
-  console.log(tableBodyContent);
   $('#tableBody').html(tableBodyContent);
 }
 

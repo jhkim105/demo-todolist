@@ -41,5 +41,5 @@ java -jar target/demo-todolist-0.0.1-SNAPSHOT.jar
 ### STEP 3- 접속하기
 * TODO App 접속하기: [http://localhost:8080/](http://localhost:8080/)
 * Swagger: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-* h2-console:[http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+* h2-console:[http://localhost:8080/h2-console](http://localhost:8080/h2-console) (JDBC URL:jdbc:h2:mem:demo)
 

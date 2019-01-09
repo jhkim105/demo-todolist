@@ -43,6 +43,23 @@ public class TaskControllerIntegrationTest {
   }
 
   @Test
+  public void testList_검색어_청_으로_검색() throws Exception {
+    // when
+    ResultActions resultActions = mockMvc.perform(get("/tasks")
+        .param("page", "0")
+        .param("size", "10")
+        .param("q", "청")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print());
+
+    // then
+    resultActions.andExpect(status().isOk())
+        .andExpect(jsonPath("$.content", hasSize(2)))
+        .andExpect(jsonPath("$.totalElements", is(2)));
+  }
+
+
+  @Test
   public void testGet() throws Exception {
     Long taskId = 1L;
     // when
@@ -94,7 +111,7 @@ public class TaskControllerIntegrationTest {
 
 
   @Test
-  public void testUpdate_fail_자기자신을_상위일감으로할수없다() throws Exception {
+  public void testUpdate_fail_자기자신을_상위일감으로_할수없다() throws Exception {
     // when
     TaskUpdateRequestVO taskUpdateRequestVO = new TaskUpdateRequestVO();
     taskUpdateRequestVO.setId(1L);
@@ -113,7 +130,7 @@ public class TaskControllerIntegrationTest {
   }
 
   @Test
-  public void testUpdate_fail_하위일감을_상위일감으로할수없다() throws Exception {
+  public void testUpdate_fail_하위일감을_상위일감으로_할수없다() throws Exception {
     // when
     TaskUpdateRequestVO taskUpdateRequestVO = new TaskUpdateRequestVO();
     taskUpdateRequestVO.setId(1L);

@@ -5,6 +5,7 @@ import com.example.todolist.core.model.Task;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,12 @@ public class TaskController {
   @GetMapping
   @ApiOperation("list")
   public Page<TaskVO> list(PageRequestVO pageRequestVO, String q) {
-    Page<Task> taskPage = service.findAll(pageRequestVO.toPageRequet(), q);
+    Page<Task> taskPage;
+    if (StringUtils.isBlank(q)) {
+      taskPage = service.findAll(pageRequestVO.toPageRequet());
+    } else {
+      taskPage = service.findAll(pageRequestVO.toPageRequet(), "%" + q + "%");
+    }
 
     Page<TaskVO> resultPage = new PageImpl<>(TaskVO.of(taskPage.getContent()),
         taskPage.getPageable(), taskPage.getTotalElements());

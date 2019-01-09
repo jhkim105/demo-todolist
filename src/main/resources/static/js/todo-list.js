@@ -60,6 +60,11 @@ $(function() {
     renderTable(0);
   });
 
+  $('#q').keyup(function (e){
+    if (e.keyCode == 13)
+      renderTable(0);
+  });
+
   // create-form
   $('#btn-create').click(function(){
     _currentTaskId = '';
@@ -129,6 +134,7 @@ $(function() {
 });
 
 function renderTable(pageNumber) {
+  $('#tableBody').html('');
   $('#current_page').val(pageNumber);
   _currentPageNumber = pageNumber;
   var options = getOptionsFromForm();
@@ -153,10 +159,22 @@ function addRow(task) {
     closedLabel = "Open";
   }
 
+  console.log(task.superTaskIds);
+  var superTaskHtml = '';
+  if (task.superTaskIds) {
+    task.superTaskIds.forEach(function (superTaskId){
+      var taskId = superTaskId.slice(1);
+      if (superTaskHtml !== '')
+        superTaskHtml += ', ';
+      superTaskHtml += '<a href="#" class="task-desc" taskid="' + taskId + '">' + superTaskId + '</a>';
+    });
+  }
+
+
   tableBodyContent += '<tr class="odd gradeX">';
   tableBodyContent += '<td class="text-center">' + task.id + '</td>';
   tableBodyContent += '<td class="text-center"><a href="#" class="task-desc" taskid="' + task.id + '">' + task.description + '</a></td>';
-  tableBodyContent += '<td class="text-center">' + task.superTaskIdsLabel + '</td>';
+  tableBodyContent += '<td class="text-center">' + superTaskHtml + '</td>';
   tableBodyContent += '<td class="text-center">' + task.createdAt + '</a></td>';
   tableBodyContent += '<td class="text-center">' + task.updatedAt + '</td>';
   tableBodyContent += '<td class="text-center">' + closedLabel + '</td>';
@@ -171,7 +189,8 @@ function addRow(task) {
 }
 
 function getTasks(pageSize, pageNumber, callback) {
-  var searchParam = {'page': pageNumber, 'size': pageSize, 'orders': ['id', 'createdAt'], 'direction': 'DESC'};
+  var q = $('#q').val();
+  var searchParam = {'page': pageNumber, 'size': pageSize, 'orders': ['id', 'createdAt'], 'direction': 'DESC', 'q': q};
 
   $.ajax({
     type : 'get',
@@ -192,13 +211,13 @@ function drawTable(data) {
   var pageSize = data.size;
   var list = data.content;
   console.log(list);
-  $('#tableBody').html('');
   if (list) {
     for (var i = 0; i < list.length; i++) {
       var task = {
         idx : page * pageSize + i + 1,
         description : list[i].description,
         superTaskIdsLabel : list[i].superTaskIdsLabel,
+        superTaskIds : list[i].superTaskIds,
         createdAt : list[i].createdAt,
         updatedAt : list[i].updatedAt,
         id : list[i].id,

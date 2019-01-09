@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
@@ -47,7 +49,12 @@ public class TaskRepositoryTest {
     // when
     Optional<Task> taskOptional = taskRepository.findById(1212l);
     taskOptional.get();
+  }
 
+  @Test
+  public void testFindAllByDescriptionLike() {
+    Page<Task> page = taskRepository.findAllByDescriptionLike(PageRequest.of(2, 2), "집안%");
+    assertThat(page.getTotalElements()).isEqualTo(1);
   }
 
 }

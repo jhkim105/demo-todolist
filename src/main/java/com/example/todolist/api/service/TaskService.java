@@ -8,6 +8,8 @@ public interface TaskService {
 
   Page<Task> findAll(Pageable pageable);
 
+  Page<Task> findAll(Pageable pageable, String q);
+
   Task save(Task task);
 
   Task close(Long id);

@@ -32,6 +32,22 @@ public class TaskServiceImpl implements TaskService {
   }
 
   @Override
+  public Page<Task> findAll(Pageable page, String q) {
+    Page<Task> taskPage;
+    if (StringUtils.isBlank(q)) {
+      taskPage = repository.findAll(page);
+    } else {
+      taskPage = repository.findAllByDescriptionLike(page, "%" + q + "%");
+    }
+
+    if (page.getPageNumber() > taskPage.getTotalPages()) {
+      throw new IllegalArgumentException(String.format("requested page[%s] is bigger than totalPages[%s]",
+          page, taskPage.getTotalPages()));
+    }
+    return taskPage;
+  }
+
+  @Override
   public Task save(Task task) {
     List<String> superTaskIds = task.getSuperTaskIds();
     checkSuperTaskIds(task, superTaskIds);

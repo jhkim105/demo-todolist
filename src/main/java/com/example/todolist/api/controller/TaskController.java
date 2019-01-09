@@ -22,8 +22,8 @@ public class TaskController {
 
   @GetMapping
   @ApiOperation("list")
-  public Page<TaskVO> list(PageRequestVO pageRequestVO) {
-    Page<Task> taskPage = service.findAll(pageRequestVO.toPageRequet());
+  public Page<TaskVO> list(PageRequestVO pageRequestVO, String q) {
+    Page<Task> taskPage = service.findAll(pageRequestVO.toPageRequet(), q);
 
     Page<TaskVO> resultPage = new PageImpl<>(TaskVO.of(taskPage.getContent()),
         taskPage.getPageable(), taskPage.getTotalElements());

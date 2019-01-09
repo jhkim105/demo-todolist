@@ -2,9 +2,11 @@ package com.example.todolist.api.service;
 
 import com.example.todolist.core.model.Task;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TaskService {
-  Page<Task> findPaginated(int page, int size);
+
+  Page<Task> findAll(Pageable pageable);
 
   Task save(Task task);
 

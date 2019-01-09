@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "tasks")
@@ -19,8 +22,8 @@ public class TaskController {
 
   @GetMapping
   @ApiOperation("list")
-  public Page<TaskVO> list(@RequestParam("page") int page, @RequestParam("size") int size) {
-    Page<Task> taskPage = service.findPaginated(page, size);
+  public Page<TaskVO> list(PageRequestVO pageRequestVO) {
+    Page<Task> taskPage = service.findAll(pageRequestVO.toPageRequet());
 
     Page<TaskVO> resultPage = new PageImpl<>(TaskVO.of(taskPage.getContent()),
         taskPage.getPageable(), taskPage.getTotalElements());

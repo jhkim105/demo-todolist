@@ -171,13 +171,14 @@ function addRow(task) {
 }
 
 function getTasks(pageSize, pageNumber, callback) {
-  var searchParam = {'page': pageNumber, 'size': pageSize};
+  var searchParam = {'page': pageNumber, 'size': pageSize, 'orders': ['id', 'createdAt'], 'direction': 'DESC'};
 
   $.ajax({
     type : 'get',
     async : false,
     url : 'tasks',
     data : searchParam,
+    traditional: true,
     dataType : 'json'
   }).done(function(data) {
     console.log(data);

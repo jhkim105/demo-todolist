@@ -93,4 +93,12 @@ public class Task implements Serializable {
   public String getRefId() {
     return SUPER_TASK_PREFIX + this.id;
   }
+
+  public enum Order {
+    ID("id"), UPDATED_AT("updated_at");
+    public String prop;
+    Order(String prop) {
+      this.prop = prop;
+    }
+  }
 }

@@ -12,4 +12,5 @@ public class SearchVO implements Serializable {
   private String q;
 
   private boolean open;
+
 }

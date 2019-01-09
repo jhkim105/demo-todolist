@@ -33,16 +33,7 @@ public class TaskRepositoryImpl implements TaskRepositoryCustom {
       query.where(task.closed.isFalse());
     }
 
-    Sort sort = pageable.getSort();
-    Sort.Order order = sort.getOrderFor("id");
-    if (order != null) {
-      if (order.getDirection() == Sort.Direction.DESC) {
-        query.orderBy(task.id.desc());
-      } else {
-        query.orderBy(task.id.asc());
-      }
-
-    }
+    setOrderBy(pageable, query, task);
 
     query.limit(pageable.getPageSize()).offset(pageable.getOffset());
 
@@ -50,5 +41,26 @@ public class TaskRepositoryImpl implements TaskRepositoryCustom {
     Page<Task> page = new PageImpl<>(results.getResults(), pageable, results.getTotal());
 
     return page;
+  }
+
+  private void setOrderBy(Pageable pageable, JPAQuery<Task> query, QTask task) {
+    Sort sort = pageable.getSort();
+    Sort.Order order = sort.getOrderFor(Task.Order.ID.prop);
+    if (order != null) {
+      if (order.getDirection() == Sort.Direction.DESC) {
+        query.orderBy(task.id.desc());
+      } else {
+        query.orderBy(task.id.asc());
+      }
+    }
+
+    order = sort.getOrderFor(Task.Order.UPDATED_AT.prop);
+    if (order != null) {
+      if (order.getDirection() == Sort.Direction.DESC) {
+        query.orderBy(task.updatedAt.desc());
+      } else {
+        query.orderBy(task.updatedAt.asc());
+      }
+    }
   }
 }

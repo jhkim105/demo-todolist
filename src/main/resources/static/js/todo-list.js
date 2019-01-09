@@ -218,7 +218,7 @@ function getTasks(pageSize, pageNumber, callback) {
   if ($("#checkbox-open").is(':checked')) {
     open = true;
   }
-  var searchParam = {'page': pageNumber, 'size': pageSize, 'orders': ['id', 'createdAt'], 'direction': 'DESC', 'q': q, 'open': open};
+  var searchParam = {'page': pageNumber, 'size': pageSize, 'order': 'ID', 'direction': 'DESC', 'q': q, 'open': open};
 
   $.ajax({
     type : 'get',

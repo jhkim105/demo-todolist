@@ -5,7 +5,6 @@ import com.example.todolist.core.model.Task;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

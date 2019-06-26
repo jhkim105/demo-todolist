@@ -9,6 +9,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -30,6 +31,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = TaskController.class)
 @ComponentScan(excludeFilters = @ComponentScan.Filter(WebMvcTestExclude.class))
 @Slf4j
+@AutoConfigureRestDocs(outputDir = "target/snippets")
 public class TaskControllerTest {
 
   @Autowired
@@ -75,6 +78,8 @@ public class TaskControllerTest {
         .andExpect(jsonPath("$.content[0].description", is(task1.getDescription())))
 
         .andExpect(jsonPath("$.content[1].description", is(task2.getDescription())));
+
+    resultActions.andDo(document("task"));
   }
 
   private String getFormattedDate(Date date, String pattern) {

@@ -2,10 +2,19 @@
 
 This is an example output for a service running at http://localhost:8080:
 
+== tasks
 .request
 include::{snippets}/task/http-request.adoc[]
 
 .response
 include::{snippets}/task/http-response.adoc[]
 
-As you can see the format is very simple, and in fact you always get the same message.
+== tasks/{id}
+. response field
+include::{snippets}/task-get/response-fields.adoc[]
+
+.request
+include::{snippets}/task-get/http-request.adoc[]
+
+.response
+include::{snippets}/task-get/http-response.adoc[]

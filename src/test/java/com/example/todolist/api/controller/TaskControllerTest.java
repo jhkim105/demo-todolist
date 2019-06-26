@@ -2,6 +2,7 @@ package com.example.todolist.api.controller;
 
 import com.example.todolist.TestUtils;
 import com.example.todolist.WebMvcTestExclude;
+import com.example.todolist.api.RestDocsConfiguration;
 import com.example.todolist.api.service.TaskService;
 import com.example.todolist.core.model.Task;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +14,12 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -29,9 +32,12 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.typeCompatibleWith;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,6 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan(excludeFilters = @ComponentScan.Filter(WebMvcTestExclude.class))
 @Slf4j
 @AutoConfigureRestDocs(outputDir = "target/snippets")
+@Import(RestDocsConfiguration.class)
 public class TaskControllerTest {
 
   @Autowired
@@ -79,7 +86,25 @@ public class TaskControllerTest {
 
         .andExpect(jsonPath("$.content[1].description", is(task2.getDescription())));
 
-    resultActions.andDo(document("task"));
+    resultActions.andDo(
+        document("task"));
+
+//    resultActions.andDo(
+//        document("task",
+//          responseFields(
+//              fieldWithPath("totalElements").type(JsonFieldType.STRING),
+//              fieldWithPath("content").type(JsonFieldType.ARRAY),
+//              fieldWithPath("pageable").type(JsonFieldType.OBJECT),
+//              fieldWithPath("last").type(JsonFieldType.BOOLEAN),
+//              fieldWithPath("totalPages").type(JsonFieldType.NUMBER),
+//              fieldWithPath("number").type(JsonFieldType.NUMBER),
+//              fieldWithPath("size").type(JsonFieldType.NUMBER),
+//              fieldWithPath("sort").type(JsonFieldType.OBJECT),
+//              fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER),
+//              fieldWithPath("first").type(JsonFieldType.BOOLEAN),
+//              fieldWithPath("empty").type(JsonFieldType.BOOLEAN)
+//          )
+//        ));
   }
 
   private String getFormattedDate(Date date, String pattern) {
@@ -105,6 +130,20 @@ public class TaskControllerTest {
     resultActions.andExpect(status().isOk())
         .andExpect(jsonPath("$.description", is(taskVO.getDescription())))
         .andExpect(jsonPath("$.superTaskIdsLabel", is(taskVO.getSuperTaskIdsLabel())));
+
+    // document
+    resultActions.andDo(
+        document("task-get",
+          responseFields(
+              fieldWithPath("closed").type(JsonFieldType.BOOLEAN).description(""),
+              fieldWithPath("createdAt").type(JsonFieldType.STRING).description(""),
+              fieldWithPath("description").type(JsonFieldType.STRING).description(""),
+              fieldWithPath("id").type(JsonFieldType.NUMBER).description(""),
+              fieldWithPath("superTaskIds").type(JsonFieldType.ARRAY).description(""),
+              fieldWithPath("superTaskIdsLabel").type(JsonFieldType.STRING).description(""),
+              fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("")
+          )
+        ));
   }
 
   @Test

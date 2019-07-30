@@ -20,7 +20,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class TaskServiceTest {
 
   @TestConfiguration
-  static class EmployeeServiceImplTestContextConfiguration {
+  static class TestContextConfiguration {
 
     @Bean
     public TaskService taskService() {

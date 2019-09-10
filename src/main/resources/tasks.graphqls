@@ -1,0 +1,11 @@
+type Task {
+    id: ID,
+    description: String,
+    closed: Boolean,
+    createdAt: String,
+    updatedAt: String,
+}
+
+type Query {
+    tasks: [Task]
+}

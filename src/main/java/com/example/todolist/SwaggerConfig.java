@@ -28,7 +28,14 @@ public class SwaggerConfig {
   }
 
   private ApiInfo appInfo() {
-    return new ApiInfo("TODO App API", "Api Documentation", "0.0.1", "urn:tos", new Contact("", "", ""),
-        "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", new ArrayList());
+    return new ApiInfoBuilder()
+        .title("TODO App API")
+        .description("Api Documentation")
+        .version("0.0.1")
+        .termsOfServiceUrl("urn:tos")
+        .contact(new Contact("", "", ""))
+        .license("Apache 2.0")
+        .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0")
+        .build();
   }
 }

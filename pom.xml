@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.1.5.RELEASE</version>
+    <version>2.3.1.RELEASE</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.example</groupId>
@@ -16,8 +16,6 @@
 
   <properties>
     <java.version>1.8</java.version>
-    <querydsl.version>4.2.1</querydsl.version>
-    <mysql.version>8.0.16</mysql.version>
     <db.address>localhost</db.address>
     <db.name>demo</db.name>
     <db.url><![CDATA[jdbc:mysql://${db.address}:3306/${db.name}?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul]]></db.url>

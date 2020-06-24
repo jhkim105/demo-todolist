@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@Ignore("rollback이 안된다.")
 public class TaskControllerIntegrationTest {
 
   @Autowired

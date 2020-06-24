@@ -2,7 +2,9 @@ package com.example.todolist.core.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,12 +21,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tu_task")
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = false, of = {"id"})
 @ToString(exclude = {"superTasks", "subTasks"})
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Task implements Serializable {
+public class Task extends BaseTraceableEntity<Long> {
 
   private static final long serialVersionUID = -1249432540792537720L;
 
@@ -40,17 +43,8 @@ public class Task implements Serializable {
   @ColumnDefault("0")
   private boolean closed;
 
-  @Column(name = "created_at", updatable = false)
-  @CreatedDate
-  private Date createdAt;
-
-  @Column(name = "updated_at")
-  @LastModifiedDate
-  private Date updatedAt;
-
   @Transient
   private List<String> superTaskIds;
-
 
   @JoinTable(name = "tu_related_task",
       joinColumns = {@JoinColumn(name = "task_id", referencedColumnName = "id", nullable = false)},

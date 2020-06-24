@@ -39,7 +39,7 @@ public class JwtUtils {
     return token;
   }
 
-  public String generateToken(Long id, String authotiry, Date expireDt) {
+  public String generateToken(String id, String authotiry, Date expireDt) {
     AuthUser authUser = new AuthUser(id, authotiry);
     return generateToken(authUser, expireDt);
   }
@@ -59,7 +59,7 @@ public class JwtUtils {
     checkToken(token);
     try {
       DecodedJWT jwt = JWT.decode(token);
-      Long id = jwt.getClaim("id").asLong();
+      String id = jwt.getClaim("id").asString();
       String authority = jwt.getClaim("authority").asString();
       AuthUser authUser = new AuthUser(id, authority);
       return authUser;

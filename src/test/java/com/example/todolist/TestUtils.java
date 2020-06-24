@@ -27,8 +27,6 @@ public final class TestUtils {
     task.setDescription(description);
     task.setId(id);
     task.setClosed(closed);
-    task.setCreatedAt(new Date());
-    task.setUpdatedAt(new Date());
     return task;
   }
 }

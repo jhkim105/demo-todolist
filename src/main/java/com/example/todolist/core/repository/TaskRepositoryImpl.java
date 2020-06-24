@@ -4,7 +4,10 @@ import com.example.todolist.core.model.QTask;
 import com.example.todolist.core.model.Task;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -13,17 +16,16 @@ import org.springframework.data.domain.Sort;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+//@RequiredArgsConstructor
 public class TaskRepositoryImpl implements TaskRepositoryCustom {
 
-  @PersistenceContext
-  private EntityManager em;
+  @Autowired
+  private JPAQueryFactory jpaQueryFactory;
 
   @Override
   public Page<Task> findAll(Pageable pageable, String q, boolean open) {
-    JPAQuery<Task> query = new JPAQuery<>(em);
     QTask task = QTask.task;
-
-    query.from(task);
+    JPAQuery<Task> query = jpaQueryFactory.selectFrom(task);
 
     if (StringUtils.isNotBlank(q)) {
       query.where(task.description.contains(q));

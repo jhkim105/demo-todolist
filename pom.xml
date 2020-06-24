@@ -17,7 +17,7 @@
   <properties>
     <java.version>1.8</java.version>
     <db.address>localhost</db.address>
-    <db.name>demo</db.name>
+    <db.name>todolist</db.name>
     <db.url><![CDATA[jdbc:mysql://${db.address}:3306/${db.name}?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul]]></db.url>
     <db.username>root</db.username>
     <db.password>111111</db.password>

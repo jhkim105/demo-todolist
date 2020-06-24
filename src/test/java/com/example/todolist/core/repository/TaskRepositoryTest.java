@@ -1,23 +1,20 @@
 package com.example.todolist.core.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.example.todolist.core.model.Task;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TaskRepositoryTest {
@@ -45,11 +42,12 @@ public class TaskRepositoryTest {
         .isEqualTo(task.getDescription());
   }
 
-  @Test(expected = NoSuchElementException.class)
+  @Test
   public void testFindById_notFound() {
-    // when
-    Optional<Task> taskOptional = taskRepository.findById(1212l);
-    taskOptional.get();
+    Assertions.assertThrows(NoSuchElementException.class, () -> {
+      Optional<Task> taskOptional = taskRepository.findById(1212l);
+      taskOptional.get();
+    });
   }
 
   @Test

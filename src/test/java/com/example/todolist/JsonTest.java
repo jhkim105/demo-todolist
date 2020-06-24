@@ -2,9 +2,9 @@ package com.example.todolist;
 
 import com.example.todolist.core.model.Task;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 
 import java.util.Arrays;
+import org.junit.jupiter.api.Test;
 
 @Slf4j
 public final class JsonTest {

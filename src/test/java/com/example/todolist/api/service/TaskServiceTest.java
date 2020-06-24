@@ -3,20 +3,21 @@ package com.example.todolist.api.service;
 import com.example.todolist.TestUtils;
 import com.example.todolist.core.model.Task;
 import com.example.todolist.core.repository.TaskRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith({SpringExtension.class})
 public class TaskServiceTest {
 
   @TestConfiguration
@@ -57,7 +58,7 @@ public class TaskServiceTest {
         .isTrue();
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void testClose_fail_existsOpenSubTasks() {
     // given
     final long sampleTaskId = 1L;
@@ -71,15 +72,13 @@ public class TaskServiceTest {
     Mockito.when(taskRepository.save(sampleTask))
         .thenReturn(sampleTask);
 
-    // when
-    Task task = taskService.close(sampleTaskId);
 
-    // then
-    assertThat(task.isClosed())
-        .isFalse();
+    // when, then
+    Assertions.assertThrows(IllegalStateException.class, () -> taskService.close(sampleTaskId));
+
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void testClose_fail_alreadyClosedTask() {
     // given
     final long sampleTaskId = -1;
@@ -91,8 +90,8 @@ public class TaskServiceTest {
     Mockito.when(taskRepository.save(sampleTask))
         .thenReturn(sampleTask);
 
-    // when
-    taskService.close(sampleTaskId);
+    // when, then
+    Assertions.assertThrows(IllegalStateException.class, () -> taskService.close(sampleTaskId));
   }
 
   @Test
@@ -111,7 +110,7 @@ public class TaskServiceTest {
     taskService.open(sampleTaskId);
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void testOpen_fail_alreadyOpen() {
     // given
     final long sampleTaskId = -1;
@@ -123,8 +122,9 @@ public class TaskServiceTest {
     Mockito.when(taskRepository.save(sampleTask))
         .thenReturn(sampleTask);
 
-    // when
-    taskService.open(sampleTaskId);
+    // when, then
+    Assertions.assertThrows(IllegalStateException.class, () -> taskService.open(sampleTaskId));
+
   }
 
 

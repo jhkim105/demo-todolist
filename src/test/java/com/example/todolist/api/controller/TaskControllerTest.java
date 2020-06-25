@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -37,6 +38,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(value = TaskController.class)
 @ComponentScan(excludeFilters = @ComponentScan.Filter(WebMvcTestExclude.class))
 @Slf4j
+@Disabled
 public class TaskControllerTest {
 
   @Autowired

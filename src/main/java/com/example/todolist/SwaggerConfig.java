@@ -3,6 +3,8 @@ package com.example.todolist;
 import io.swagger.annotations.*;
 import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.context.annotation.*;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import springfox.documentation.builders.*;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -38,4 +40,5 @@ public class SwaggerConfig {
         .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0")
         .build();
   }
+
 }

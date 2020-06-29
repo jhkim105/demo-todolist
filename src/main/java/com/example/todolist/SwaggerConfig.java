@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.*;
 import java.util.ArrayList;
 
 @Configuration
-@EnableSwagger2WebMvc
+@EnableSwagger2WebFlux
 @ConditionalOnProperty(prefix="swagger", name="enabled", havingValue = "true")
 public class SwaggerConfig {
   @Bean

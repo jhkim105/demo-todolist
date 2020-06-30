@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // @formatter:off
     http
       .authorizeRequests()
-        .antMatchers("/", "/auth/**", "/login", "/todo-list").permitAll()
+        .antMatchers("/", "/auth/**", "/login", "/todo-list", "/oauth2-login").permitAll()
         .anyRequest().authenticated()
         .and()
       .addFilterBefore(tokenAuthenticationFilter(), BasicAuthenticationFilter.class)
@@ -35,7 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .httpBasic()
         .authenticationEntryPoint(tokenAuthenticationEntryPoint())
         .and()
-      .csrf().disable();
+      .csrf().disable()
+      .oauth2Login()
+        .loginPage("/oauth2-login");
     // @formatter:on
   }
 

@@ -21,7 +21,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public Page<Task> findPaginated(int page, int size) {
-    Sort sort = new Sort(Sort.Direction.DESC, "id");
+    Sort sort = Sort.by(Sort.Direction.DESC, "id");
     PageRequest pageRequest = PageRequest.of(page, size, sort);
 
     Page<Task> taskPage = repository.findAll(pageRequest);

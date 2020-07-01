@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<!--  <localRepository>D:\dev\.m2\repository</localRepository>-->
+  <pluginGroups>
+  </pluginGroups>
+  <proxies>
+  </proxies>
+  <servers>
+  </servers>
+  <mirrors>
+  </mirrors>
+  <profiles>
+    <profile>
+      <id>local-mysql</id>
+      <properties>
+        <db.password>111111</db.password>
+      </properties>
+    </profile>
+    <profile>
+      <id>local-mariadb</id>
+      <properties>
+        <db.password>111111</db.password>
+        <db.type>mariadb</db.type>
+      </properties>
+    </profile>
+  </profiles>
+  <activeProfiles>
+<!--    <activeProfile>local-mysql</activeProfile>-->
+    <activeProfile>local-mariadb</activeProfile>
+    <activeProfile>db-mariadb</activeProfile>
+  </activeProfiles>
+</settings>

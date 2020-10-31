@@ -25,8 +25,7 @@ public class TaskServiceTest {
 
     @Bean
     public TaskService taskService() {
-      return new TaskServiceImpl() {
-      };
+      return new TaskServiceImpl();
     }
   }
 
